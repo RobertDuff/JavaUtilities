@@ -2,6 +2,7 @@ package utility.arrays;
 
 import java.text.Format;
 import java.text.NumberFormat;
+import java.util.List;
 
 /**
  * Convert Arrays of one type to Arrays of various other types.
@@ -683,6 +684,17 @@ public class ArrayConverter
 		for ( int i=0; i<source.length; i++ ) dest[ i ] = Short.valueOf ( source[ i ] );
 		
 		return dest;
+	}
+
+	/**
+	 * Performs an Array type conversion.
+	 * 
+	 * @param source An {@code Integer} Array.
+	 * @return A {@code int[]} Array.
+	 */
+	public static int[] intArray ( List<? extends Number> source )
+	{
+		return source.stream ().mapToInt ( n -> n.intValue () ).toArray ();
 	}
 
 	/**

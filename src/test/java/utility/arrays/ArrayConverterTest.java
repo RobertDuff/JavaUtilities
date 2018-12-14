@@ -1,25 +1,16 @@
 package utility.arrays;
 
 import static org.junit.Assert.assertArrayEquals;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
-import static utility.arrays.ArrayConverter.booleanArray;
-import static utility.arrays.ArrayConverter.byteArray;
-import static utility.arrays.ArrayConverter.charArray;
-import static utility.arrays.ArrayConverter.doubleArray;
-import static utility.arrays.ArrayConverter.floatArray;
-import static utility.arrays.ArrayConverter.intArray;
-import static utility.arrays.ArrayConverter.longArray;
-import static utility.arrays.ArrayConverter.shortArray;
-import static utility.arrays.ArrayConverter.stringArray;
+import static utility.arrays.ArrayConverter.*;
 
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 
+import junit.framework.TestCase;
+
 import org.junit.Test;
 
-public class ArrayConverterTest
+public class ArrayConverterTest extends TestCase
 {
 	private static final boolean[]   ta  = new boolean[]   { false, true, true };
 	private static final Boolean[]   TA  = new Boolean[]   { false, true, true };

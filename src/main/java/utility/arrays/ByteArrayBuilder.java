@@ -1,134 +1,167 @@
 package utility.arrays;
 
 import java.nio.ByteBuffer;
+import java.nio.ByteOrder;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
+/**
+ * Adds data of various types to a single byte array.
+ * 
+ * This is primarily for use in encoding protocol messages prior to transmission.
+ * 
+ * @author Rob Duff
+ *
+ */
 public class ByteArrayBuilder
 {
+	private ByteBuffer scratchBuffer = ByteBuffer.allocate ( Double.BYTES );
 	private List<Byte> buffer = new ArrayList<>();
 
+	/**
+	 * Constructs a new {@code ByteArrayBuilder}
+	 */
 	public ByteArrayBuilder()
 	{}
 
-	public ByteArrayBuilder append ( boolean b )
+	/**
+	 * Sets the Byte Ordering to use when adding numeric types.
+	 * 
+	 * @param order The byte ordering to use for numeric types.
+	 * @return This Builder.
+	 */
+	public ByteArrayBuilder order ( ByteOrder order )
 	{
-		buffer.add ( ( byte ) ( b? 1 : 0 ) );
+		scratchBuffer.order ( order );
+		
 		return this;
 	}
+	
+	/**
+	 * Adds a boolean value as a single byte (0x00 for false, 0x01 for true)
+	 * 
+	 * @param b The boolean value to add.
+	 * @return This Builder.
+	 */
+	public ByteArrayBuilder add ( boolean b )
+	{
+		return add ( ( byte ) ( b? 1 : 0 ) );
+	}
 
-	public ByteArrayBuilder append ( Byte b )
+	/**
+	 * @param b A byte to add.
+	 * @return This Builder.
+	 */
+	public ByteArrayBuilder add ( byte b )
 	{
 		buffer.add ( b );
 		return this;
 	}
-
-	public ByteArrayBuilder append ( Byte[] a )
+	
+	/**
+	 * @param c A character to add.
+	 * @return This Builder.
+	 */
+	public ByteArrayBuilder add ( char c )
 	{
-		for ( Byte b : a )
-			buffer.add ( b );
-
-		return this;
-	}
-
-	public ByteArrayBuilder append ( Byte[] a, int offset, int length )
-	{
-		for ( Byte b : a )
-			buffer.add ( b );
-
-		return this;
-	}
-
-	public ByteArrayBuilder append ( byte[] a )
-	{
-		for ( byte b : a )
-			buffer.add ( b );
-
-		return this;
-	}
-
-	public ByteArrayBuilder append ( byte[] a, int offset, int length )
-	{
-		for ( byte b : a )
-			buffer.add ( b );
-
-		return this;
-	}
-
-	public ByteArrayBuilder append ( Character c )
-	{
-		return append ( c.toString() );
-	}
-
-	public ByteArrayBuilder append ( char[] a )
-	{
-		for ( char c : a )
-			append ( c );
-
-		return this;
-	}
-
-	public ByteArrayBuilder append ( char[] a, int offset, int length )
-	{
-		for ( int i = offset; i < offset+length; i++ )
-			append ( a[ i ] );
-
-		return this;
-	}
-
-	public ByteArrayBuilder append ( Character[] a )
-	{
-		for ( Character c : a )
-			append ( c );
-
-		return this;
-	}
-
-	public ByteArrayBuilder append ( Character[] a, int offset, int length )
-	{
-		for ( int i = offset; i < offset+length; i++ )
-			append ( a[ i ] );
-
-		return this;
+		return add ( String.valueOf ( c ) );
 	}
 	
-	public ByteArrayBuilder append ( CharSequence s )
+	/**
+	 * @param s A short to add.
+	 * @return This Builder.
+	 */
+	public ByteArrayBuilder add ( short s )
 	{
-		return append ( s.toString() );
-	}
-	
-	public ByteArrayBuilder append ( Double d )
-	{
-		return append ( ByteBuffer.allocate ( Double.BYTES ).putDouble ( d ).array() );
-	}
-	
-	public ByteArrayBuilder append ( Float f )
-	{
-		return append ( ByteBuffer.allocate ( Float.BYTES ).putFloat ( f ).array() );
-	}
-	
-	public ByteArrayBuilder append ( Short s )
-	{
-		return append ( ByteBuffer.allocate ( Short.BYTES ).putShort ( s ).array() );
-	}
-	
-	public ByteArrayBuilder append ( Integer i )
-	{
-		return append ( ByteBuffer.allocate ( Integer.BYTES ).putInt ( i ).array() );
-	}
-	
-	public ByteArrayBuilder append ( Long l )
-	{
-		return append ( ByteBuffer.allocate ( Long.BYTES ).putLong ( l ).array() );
+		scratchBuffer.clear();
+		return add ( scratchBuffer.putShort ( s ).array(), 0, Short.BYTES );
 	}
 
-	public ByteArrayBuilder append ( String s )
+	/**
+	 * @param i An integer to add.
+	 * @return This Builder.
+	 */
+	public ByteArrayBuilder add ( int i )
 	{
-		return append ( s.getBytes() );
+		scratchBuffer.clear();
+		return add ( scratchBuffer.putInt ( i ).array(), 0, Integer.BYTES );
 	}
 
-	public ByteArrayBuilder append ( StringBuffer s )
+	/**
+	 * @param l A long to add.
+	 * @return This Builder.
+	 */
+	public ByteArrayBuilder add ( long l )
 	{
-		return append ( s.toString() );
+		scratchBuffer.clear();
+		return add ( scratchBuffer.putLong ( l ).array(), 0, Long.BYTES );
+	}
+
+	/**
+	 * @param f A float to add.
+	 * @return This Builder.
+	 */
+	public ByteArrayBuilder add ( float f )
+	{
+		scratchBuffer.clear();
+		return add ( scratchBuffer.putFloat ( f ).array(), 0, Float.BYTES );
+	}
+
+	/**
+	 * @param d A double to add.
+	 * @return This Builder.
+	 */
+	public ByteArrayBuilder add ( double d )
+	{
+		scratchBuffer.clear();
+		return add ( scratchBuffer.putDouble ( d ).array(), 0, Double.BYTES );
+	}
+	
+	/**
+	 * @param a A byte array to add.
+	 * @return This Builder.
+	 */
+	public ByteArrayBuilder add ( byte[] a )
+	{
+		buffer.addAll ( Arrays.asList ( ArrayConverter.byteArray ( a ) ) );
+		return this;
+	}
+
+	/**
+	 * @param a A byte array to add from.
+	 * @param offset The offset of the starting point to add from.
+	 * @param length The number of bytes to add.
+	 * @return This Builder.
+	 */
+	public ByteArrayBuilder add ( byte[] a, int offset, int length )
+	{
+		buffer.addAll ( Arrays.asList ( ArrayConverter.byteArray ( a ) ).subList ( offset, offset+length ) );
+		return this;
+	}
+
+	/**
+	 * @param s A string to add, as a byte array.
+	 * @return This Builder.
+	 */
+	public ByteArrayBuilder add ( String s )
+	{
+		return add ( s.getBytes() );
+	}
+	
+	/**
+	 * @return The current size of the byte array.
+	 */
+	public int size()
+	{
+		return buffer.size ();
+	}
+	
+	/**
+	 * @return The composed byte array.
+	 */
+	public byte[] build()
+	{
+		return ArrayConverter.byteArray ( buffer.toArray ( new Byte[0] ) );
 	}
 }
