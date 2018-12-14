@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified">
+
+    <xs:element name="family">
+    	<xs:complexType>
+    		<xs:sequence>
+    			<xs:element name="name" type="xs:string" maxOccurs="1"
+    				minOccurs="1"
+    			>
+    			</xs:element>
+    			<xs:element name="father" type="PersonType"></xs:element>
+    			<xs:element name="mother" type="PersonType"></xs:element>
+    			<xs:element name="children">
+    				<xs:complexType>
+    					<xs:sequence>
+    						<xs:element name="child" type="PersonType"
+    							maxOccurs="unbounded" minOccurs="0"
+    						>
+    						</xs:element>
+    					</xs:sequence>
+    				</xs:complexType>
+    			</xs:element>
+    		</xs:sequence>
+    		<xs:attribute name="noNamespaceSchemaLocation" type="xs:string"></xs:attribute>
+    	</xs:complexType>
+    </xs:element>
+
+    <xs:complexType name="PersonType">
+    	<xs:sequence>
+    		<xs:element name="name" type="xs:string" maxOccurs="1" minOccurs="1">
+    		</xs:element>
+    		<xs:element name="age" type="xs:int" maxOccurs="1" minOccurs="1">
+    		</xs:element>
+    		<xs:element name="male" maxOccurs="1" minOccurs="0">
+                <xs:complexType>
+                </xs:complexType>
+            </xs:element>
+    		<xs:element name="female" maxOccurs="1" minOccurs="0">
+    			<xs:complexType>
+    			</xs:complexType>
+    		</xs:element>
+    	</xs:sequence>
+    </xs:complexType>
+</xs:schema>

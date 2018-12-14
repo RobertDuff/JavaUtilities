@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<family xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="family.xsd">
+	<name>		Duff       Family  </name>
+
+	<father>
+		<name>Robert</name>
+		<age>48</age>
+		<male />
+	</father>
+
+	<mother>
+		<name>Jackeline</name>
+		<age>46</age>
+		<female/>
+	</mother>
+
+	<children>
+	
+		<child>
+			<name>Madeline</name>
+			<age>19</age>
+			<female/>
+		</child>
+		
+		<child>
+			<name>Ethan</name>
+			<age>17</age>
+			<male/>
+		</child>
+		
+		<child>
+			<name>Lauren</name>
+			<age>15</age>
+			<female/>
+		</child>
+		
+		<child>
+			<name>Kristen</name>
+			<age>12</age>
+			<female/>
+		</child>
+		
+	</children>
+
+</family>
