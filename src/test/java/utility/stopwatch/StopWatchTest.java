@@ -16,7 +16,7 @@ public class StopWatchTest
 {
 	private class TimeCheck extends BaseMatcher<Long>
 	{
-		private static final long MAX_DELTA = 9;
+		private static final long MAX_DELTA = 50;
 	
 		private long expectedTime;
 		

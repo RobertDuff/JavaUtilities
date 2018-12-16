@@ -35,12 +35,22 @@ public class Function
 		func = fn;
 	}
 	
-	LuaValue call ( Object... args )
+	public LuaValue call ( Varargs args )
+	{
+		return invoke ( args ).arg1();
+	}
+
+	public LuaValue call ( Object... args )
 	{
 		return invoke ( args ).arg1();
 	}
 	
-	Varargs invoke ( Object... args )
+	public Varargs invoke ( Varargs args )
+	{
+		return func.invoke ( args );
+	}
+	
+	public Varargs invoke ( Object... args )
 	{
 		return func.invoke ( args ( args ) );
 	}
