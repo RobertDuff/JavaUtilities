@@ -17,13 +17,13 @@ public class Polynomial
 	public static final Polynomial ZERO = new Polynomial();
 	public static final Polynomial ONE  = new Polynomial ( 1 );
 	
-	private int[] coefficients;
+	private long[] coefficients;
 	
 	/**
 	 * Construct a new Polynomial.
 	 * @param coefficients The array of coefficients for each x term (Example: 5x<sup>3</sup> + 7x + 8 is represented as {@code [8, 7, 0, 5]})
 	 */
-	public Polynomial ( int... coefficients )
+	public Polynomial ( long... coefficients )
 	{
 		int i = coefficients.length-1;
 		
@@ -41,7 +41,7 @@ public class Polynomial
 	/**
 	 * @return The {@code Polynomial}'s coefficient array.
 	 */
-	public int[] coefficients()
+	public long[] coefficients()
 	{
 		return coefficients;
 	}
@@ -53,7 +53,7 @@ public class Polynomial
 	 */
 	public Polynomial add ( Polynomial poly )
 	{
-		int[] sum = Arrays.copyOf ( coefficients, Math.max ( coefficients.length, poly.coefficients ().length ) );
+		long[] sum = Arrays.copyOf ( coefficients, Math.max ( coefficients.length, poly.coefficients ().length ) );
 		
 		for ( int i=0; i<poly.coefficients ().length; i++ )
 			sum[ i ] += poly.coefficients ()[ i ];
@@ -68,7 +68,7 @@ public class Polynomial
 	 */
 	public Polynomial subtract ( Polynomial poly )
 	{
-		int[] difference = Arrays.copyOf ( coefficients, Math.max ( coefficients.length, poly.coefficients ().length ) );
+		long[] difference = Arrays.copyOf ( coefficients, Math.max ( coefficients.length, poly.coefficients ().length ) );
 		
 		
 		for ( int i=0; i<poly.coefficients ().length; i++ )
@@ -84,7 +84,7 @@ public class Polynomial
 	 */
 	public Polynomial multiply ( Polynomial poly )
 	{
-		int[] product = new int[ coefficients.length + poly.coefficients ().length + 1 ];
+		long[] product = new long[ coefficients.length + poly.coefficients ().length + 1 ];
 		Arrays.fill ( product, 0 );
 		
 		for ( int a=0; a<coefficients.length; a++ )
