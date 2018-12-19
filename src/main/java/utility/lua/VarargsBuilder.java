@@ -15,6 +15,14 @@ public class VarargsBuilder
 {
 	private List<LuaValue> argsList = new ArrayList<>();
 	
+	public VarargsBuilder add ( Varargs args )
+	{
+	    for ( int n=1; n<=args.narg (); n++ )
+	        argsList.add ( args.arg ( n ) );
+	    
+	    return this;
+	}
+	
 	public VarargsBuilder add ( int i )
 	{
 		argsList.add ( LuaNumber.valueOf ( i ) );
@@ -43,6 +51,12 @@ public class VarargsBuilder
 	{
 		argsList.add ( LuaString.valueOf ( s ) );
 		return this;
+	}
+	
+	public VarargsBuilder add ( LuaValue v )
+	{
+	    argsList.add ( v );
+	    return this;
 	}
 	
 	public VarargsBuilder addNil ()

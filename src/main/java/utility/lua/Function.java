@@ -1,6 +1,7 @@
 package utility.lua;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import org.luaj.vm2.Globals;
@@ -14,20 +15,45 @@ import org.luaj.vm2.Varargs;
 
 public class Function
 {
+    private Globals globals;
 	private String chunk;
 	private LuaFunction func;
 	
-	public Function ( Globals globals, String... body )
-	{		
-		StringBuilder chunkBuilder = new StringBuilder();
-					
-		for ( String line : body )
-			chunkBuilder.append( line ).append( "\n" );
-					
-		chunk = chunkBuilder.toString();
-		
-		func = globals.load ( chunk ).checkfunction();
+	// Used only by subclasses
+	protected Function ( Globals globals )
+	{
+	    this.globals = globals;
 	}
+	
+	protected void define ( List<String> body )
+	{
+        StringBuilder chunkBuilder = new StringBuilder();
+        
+        for ( String line : body )
+            chunkBuilder.append ( line ).append( "\n" );
+                    
+        chunk = chunkBuilder.toString();
+        
+        func = globals.load ( chunk ).checkfunction();     
+
+	}
+	
+	protected void define ( String... body )
+	{
+	    define ( Arrays.asList ( body ) );
+	}
+    
+    public Function ( Globals globals, String... body )
+    {       
+        this ( globals );
+        define ( body );
+    }
+    
+    public Function ( Globals globals, List<String> body )
+    {       
+        this ( globals );
+        define ( body );
+    }
 	
 	public Function ( LuaFunction fn )
 	{
@@ -40,20 +66,20 @@ public class Function
 		return invoke ( args ).arg1();
 	}
 
-	public LuaValue call ( Object... args )
-	{
-		return invoke ( args ).arg1();
-	}
-	
+    public LuaValue call ( Object... args )
+    {
+        return invoke ( args ).arg1();
+    }
+
 	public Varargs invoke ( Varargs args )
 	{
 		return func.invoke ( args );
 	}
 	
-	public Varargs invoke ( Object... args )
-	{
-		return func.invoke ( args ( args ) );
-	}
+    public Varargs invoke ( Object... args )
+    {
+        return func.invoke ( args ( args ) );
+    }
 	
 	private LuaValue[] args ( Object... args )
 	{

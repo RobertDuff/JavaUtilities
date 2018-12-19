@@ -56,4 +56,25 @@ public class VarargsBuilderTest
 		assertEquals ( 1, v.narg() );
 		assertTrue ( v.arg ( 1 ).isnil() );
 	}
+	
+	@Test
+	public void testMultiple()
+	{
+	    VarargsBuilder a = new VarargsBuilder ();
+	    VarargsBuilder b = new VarargsBuilder ();
+	    VarargsBuilder c = new VarargsBuilder ();
+	    
+	    a.add ( true ).add ( 10 );
+	    b.add ( "Hello" ).add ( 7.3 );
+	    
+	    c.add ( a.build () ).add ( b.build () );
+	    
+	    Varargs v = c.build ();
+	    
+	    assertEquals ( 4, v.narg () );
+	    assertTrue ( v.arg ( 1 ).toboolean () );
+	    assertEquals ( 10, v.arg ( 2 ).toint () );
+	    assertEquals ( "Hello", v.arg ( 3 ).tojstring () );
+	    assertEquals ( 7.3, v.arg ( 4 ).todouble (), 0.01 );
+	}
 }
