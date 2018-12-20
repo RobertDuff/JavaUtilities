@@ -1613,4 +1613,293 @@ public class ArrayConverter
 		
 		return dest;
 	}
+	
+    /**
+     * Performs an Array type conversion.
+     * 
+     * @param source A <code>Boolean[]</code> Array.
+     * @return An <code>Object[]</code> Array.
+     */
+	public static Object[] objectArray ( Boolean[] source )
+	{
+        if ( source == null ) return null;
+
+        Object[] dest = new Object[ source.length ];
+        
+        for ( int i=0; i<source.length; i++ ) dest[ i ] = source[ i ];
+        
+        return dest;
+	}
+    
+    /**
+     * Performs an Array type conversion.
+     * 
+     * @param source A <code>boolean[]</code> Array.
+     * @return An <code>Object[]</code> Array.
+     */
+    public static Object[] objectArray ( boolean[] source )
+    {
+        if ( source == null ) return null;
+
+        Object[] dest = new Object[ source.length ];
+        
+        for ( int i=0; i<source.length; i++ ) dest[ i ] = source[ i ];
+        
+        return dest;
+    }
+    
+    /**
+     * Performs an Array type conversion.
+     * 
+     * @param source A <code>Byte[]</code> Array.
+     * @return An <code>Object[]</code> Array.
+     */
+    public static Object[] objectArray ( Byte[] source )
+    {
+        if ( source == null ) return null;
+
+        Object[] dest = new Object[ source.length ];
+        
+        for ( int i=0; i<source.length; i++ ) dest[ i ] = source[ i ];
+        
+        return dest;
+    }
+    
+    /**
+     * Performs an Array type conversion.
+     * 
+     * @param source A <code>byte[]</code> Array.
+     * @return An <code>Object[]</code> Array.
+     */
+    public static Object[] objectArray ( byte[] source )
+    {
+        if ( source == null ) return null;
+
+        Object[] dest = new Object[ source.length ];
+        
+        for ( int i=0; i<source.length; i++ ) dest[ i ] = source[ i ];
+        
+        return dest;
+    }
+    
+    /**
+     * Performs an Array type conversion.
+     * 
+     * @param source A <code>Character[]</code> Array.
+     * @return An <code>Object[]</code> Array.
+     */
+    public static Object[] objectArray ( Character[] source )
+    {
+        if ( source == null ) return null;
+
+        Object[] dest = new Object[ source.length ];
+        
+        for ( int i=0; i<source.length; i++ ) dest[ i ] = source[ i ];
+        
+        return dest;
+    }
+    
+    /**
+     * Performs an Array type conversion.
+     * 
+     * @param source A <code>char[]</code> Array.
+     * @return An <code>Object[]</code> Array.
+     */
+    public static Object[] objectArray ( char[] source )
+    {
+        if ( source == null ) return null;
+
+        Object[] dest = new Object[ source.length ];
+        
+        for ( int i=0; i<source.length; i++ ) dest[ i ] = source[ i ];
+        
+        return dest;
+    }
+    
+    /**
+     * Performs an Array type conversion.
+     * 
+     * @param source A <code>Short[]</code> Array.
+     * @return An <code>Object[]</code> Array.
+     */
+    public static Object[] objectArray ( Short[] source )
+    {
+        if ( source == null ) return null;
+
+        Object[] dest = new Object[ source.length ];
+        
+        for ( int i=0; i<source.length; i++ ) dest[ i ] = source[ i ];
+        
+        return dest;
+    }
+    
+    /**
+     * Performs an Array type conversion.
+     * 
+     * @param source A <code>short[]</code> Array.
+     * @return An <code>Object[]</code> Array.
+     */
+    public static Object[] objectArray ( short[] source )
+    {
+        if ( source == null ) return null;
+
+        Object[] dest = new Object[ source.length ];
+        
+        for ( int i=0; i<source.length; i++ ) dest[ i ] = source[ i ];
+        
+        return dest;
+    }
+    
+    /**
+     * Performs an Array type conversion.
+     * 
+     * @param source A <code>Integer[]</code> Array.
+     * @return An <code>Object[]</code> Array.
+     */
+    public static Object[] objectArray ( Integer[] source )
+    {
+        if ( source == null ) return null;
+
+        Object[] dest = new Object[ source.length ];
+        
+        for ( int i=0; i<source.length; i++ ) dest[ i ] = source[ i ];
+        
+        return dest;
+    }
+    
+    /**
+     * Performs an Array type conversion.
+     * 
+     * @param source A <code>int[]</code> Array.
+     * @return An <code>Object[]</code> Array.
+     */
+    public static Object[] objectArray ( int[] source )
+    {
+        if ( source == null ) return null;
+
+        Object[] dest = new Object[ source.length ];
+        
+        for ( int i=0; i<source.length; i++ ) dest[ i ] = source[ i ];
+        
+        return dest;
+    }
+    
+    /**
+     * Performs an Array type conversion.
+     * 
+     * @param source A <code>Long[]</code> Array.
+     * @return An <code>Object[]</code> Array.
+     */
+    public static Object[] objectArray ( Long[] source )
+    {
+        if ( source == null ) return null;
+
+        Object[] dest = new Object[ source.length ];
+        
+        for ( int i=0; i<source.length; i++ ) dest[ i ] = source[ i ];
+        
+        return dest;
+    }
+    
+    /**
+     * Performs an Array type conversion.
+     * 
+     * @param source A <code>long[]</code> Array.
+     * @return An <code>Object[]</code> Array.
+     */
+    public static Object[] objectArray ( long[] source )
+    {
+        if ( source == null ) return null;
+
+        Object[] dest = new Object[ source.length ];
+        
+        for ( int i=0; i<source.length; i++ ) dest[ i ] = source[ i ];
+        
+        return dest;
+    }
+    
+    /**
+     * Performs an Array type conversion.
+     * 
+     * @param source A <code>Float[]</code> Array.
+     * @return An <code>Object[]</code> Array.
+     */
+    public static Object[] objectArray ( Float[] source )
+    {
+        if ( source == null ) return null;
+
+        Object[] dest = new Object[ source.length ];
+        
+        for ( int i=0; i<source.length; i++ ) dest[ i ] = source[ i ];
+        
+        return dest;
+    }
+    
+    /**
+     * Performs an Array type conversion.
+     * 
+     * @param source A <code>float[]</code> Array.
+     * @return An <code>Object[]</code> Array.
+     */
+    public static Object[] objectArray ( float[] source )
+    {
+        if ( source == null ) return null;
+
+        Object[] dest = new Object[ source.length ];
+        
+        for ( int i=0; i<source.length; i++ ) dest[ i ] = source[ i ];
+        
+        return dest;
+    }
+    
+    /**
+     * Performs an Array type conversion.
+     * 
+     * @param source A <code>Double[]</code> Array.
+     * @return An <code>Object[]</code> Array.
+     */
+    public static Object[] objectArray ( Double[] source )
+    {
+        if ( source == null ) return null;
+
+        Object[] dest = new Object[ source.length ];
+        
+        for ( int i=0; i<source.length; i++ ) dest[ i ] = source[ i ];
+        
+        return dest;
+    }
+    
+    /**
+     * Performs an Array type conversion.
+     * 
+     * @param source A <code>double[]</code> Array.
+     * @return An <code>Object[]</code> Array.
+     */
+    public static Object[] objectArray ( double[] source )
+    {
+        if ( source == null ) return null;
+
+        Object[] dest = new Object[ source.length ];
+        
+        for ( int i=0; i<source.length; i++ ) dest[ i ] = source[ i ];
+        
+        return dest;
+    }
+    
+    /**
+     * Performs an Array type conversion.
+     * 
+     * @param source A <code>String[]</code> Array.
+     * @return An <code>Object[]</code> Array.
+     */
+    public static Object[] objectArray ( String[] source )
+    {
+        if ( source == null ) return null;
+
+        Object[] dest = new Object[ source.length ];
+        
+        for ( int i=0; i<source.length; i++ ) dest[ i ] = source[ i ];
+        
+        return dest;
+    }
 }
