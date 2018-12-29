@@ -22,4 +22,9 @@ public class LuaProvider
 		
 		return luaMap.get ( key );
 	}
+	
+	public static Globals newLua()
+	{
+	    return JsePlatform.debugGlobals ();
+	}
 }
