@@ -10,12 +10,12 @@ public class Point
 	/**
 	 * The X Axis Coordinate of the Point.
 	 */
-	private double x;
+	protected double x;
 
 	/**
 	 * The Y Axis Coordinate of the Point.
 	 */
-	private double y;
+	protected double y;
 	
 	/**
 	 * Creates a new Point at the specified Coordinates.
