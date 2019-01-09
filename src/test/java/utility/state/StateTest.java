@@ -422,31 +422,31 @@ public class StateTest
         assertEquals ( sC, fsm.currentState() );
         assertEquals ( sX, fsm.currentState().subModels().get( 0 ).currentState() );
         assertEquals ( sP, fsm.currentState().subModels().get( 1 ).currentState() );
-        assertEquals ( "C(X,P)", fsm.currentState().toString() );
+        assertEquals ( "C([X, P])", fsm.currentState().toString() );
 
         fsm.react ( toY );
         assertEquals ( sC, fsm.currentState() );
         assertEquals ( sY, fsm.currentState().subModels().get( 0 ).currentState() );
         assertEquals ( sP, fsm.currentState().subModels().get( 1 ).currentState() );
-        assertEquals ( "C(Y,P)", fsm.currentState().toString() );
+        assertEquals ( "C([Y, P])", fsm.currentState().toString() );
 
         fsm.react ( toQ );
         assertEquals ( sC, fsm.currentState() );
         assertEquals ( sY, fsm.currentState().subModels().get( 0 ).currentState() );
         assertEquals ( sQ, fsm.currentState().subModels().get( 1 ).currentState() );
-        assertEquals ( "C(Y,Q)", fsm.currentState().toString() );
+        assertEquals ( "C([Y, Q])", fsm.currentState().toString() );
 
         fsm.react ( toX );
         assertEquals ( sC, fsm.currentState() );
         assertEquals ( sX, fsm.currentState().subModels().get( 0 ).currentState() );
         assertEquals ( sQ, fsm.currentState().subModels().get( 1 ).currentState() );
-        assertEquals ( "C(X,Q)", fsm.currentState().toString() );
+        assertEquals ( "C([X, Q])", fsm.currentState().toString() );
 
         fsm.react ( toP );
         assertEquals ( sC, fsm.currentState() );
         assertEquals ( sX, fsm.currentState().subModels().get( 0 ).currentState() );
         assertEquals ( sP, fsm.currentState().subModels().get( 1 ).currentState() );
-        assertEquals ( "C(X,P)", fsm.currentState().toString() );
+        assertEquals ( "C([X, P])", fsm.currentState().toString() );
 
         fsm.react ( toA );
         assertEquals ( sA, fsm.currentState() );

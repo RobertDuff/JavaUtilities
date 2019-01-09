@@ -81,6 +81,13 @@ public class VarargsBuilder
 		return this;
 	}
 	
+	public VarargsBuilder addAll ( Iterable<? extends Object> os )
+	{
+	    for ( Object o : os )
+	        add ( o );
+	    return this;
+	}
+	
 	public Varargs build()
 	{
 		return LuaValue.varargsOf ( argsList.toArray ( LuaValue.NOVALS ) );

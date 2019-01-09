@@ -10,8 +10,6 @@ import java.util.function.Function;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import static utility.join.Join.*;
-
 /**
  * Class representing a {@code State} in a {@link StateMachine}.
  * @author Rob Duff 
@@ -126,7 +124,7 @@ public class State
         if ( !subModels.isEmpty() )
         {
             nameBuilder.append ( "(" );
-            nameBuilder.append ( join ( ",", subModels ) );
+            nameBuilder.append ( subModels.toString () );
             nameBuilder.append ( ")" );
         }
         
@@ -160,7 +158,7 @@ public class State
                 newEvents.addAll ( actionEvents );
         }
 
-        logger.debug ( "State " + name + ": Enter Returning New Events [ " + join ( ", ", newEvents ) + " ]" );
+        logger.debug ( "State " + name + ": Enter Returning New Events [ " + newEvents.toString () + " ]" );
         return newEvents;
     };
     
@@ -191,7 +189,7 @@ public class State
                 newEvents.addAll ( actionEvents );
         }
 
-        logger.debug ( "State " + name + ": Exit Returning New Events [ " + join ( ", ", newEvents ) + " ]" );
+        logger.debug ( "State " + name + ": Exit Returning New Events [ " + newEvents.toString() + " ]" );
         return newEvents;
     };
     
@@ -212,7 +210,7 @@ public class State
             newEvents.addAll ( model.react ( event ) );
         }
 
-        logger.debug ( "State " + name + ": React Returning New Events [ " + join ( ", ", newEvents ) + " ]" );
+        logger.debug ( "State " + name + ": React Returning New Events [ " + newEvents.toString () + " ]" );
         return newEvents;
     }
     

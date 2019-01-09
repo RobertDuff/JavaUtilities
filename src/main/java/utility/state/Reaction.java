@@ -1,7 +1,5 @@
 package utility.state;
 
-import static utility.join.Join.join;
-
 import java.util.Collections;
 import java.util.List;
 import java.util.function.Function;
@@ -152,7 +150,7 @@ public class Reaction
         
             if ( newEvents != null )
             {
-                logger.debug ( "Reaction Returning New Events [ " + join ( ", ", newEvents ) + " ]" );
+                logger.debug ( "Reaction Returning New Events [ " + newEvents.toString () + " ]" );
                 return newEvents;
             }
         }

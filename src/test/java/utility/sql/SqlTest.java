@@ -33,6 +33,8 @@ public class SqlTest
         EasyMock.replay ( stmt );
         
         new Sql ( stmt ).add ( 1 ).add ( 2L ).add ( 3.3 ).add ( true ).add ( "Five" ).add ( Null.BOOLEAN ).add ( Null.STRING );
+        
+        EasyMock.verify ( stmt );
     }
     
     @Test
@@ -52,6 +54,8 @@ public class SqlTest
         EasyMock.replay ( stmt );
         
         new Sql ( stmt, 1, 2L, 3.3, true, "Five", Null.BOOLEAN, Null.STRING );
+        
+        EasyMock.verify ( stmt );
     }
     
     @Test
@@ -71,6 +75,8 @@ public class SqlTest
         EasyMock.replay ( stmt );
         
         new Sql ( stmt ).add ( 1, 2L, 3.3, true, "Five", Null.BOOLEAN, Null.STRING );
+        
+        EasyMock.verify ( stmt );
     }
     
     @Test
@@ -89,6 +95,8 @@ public class SqlTest
         l.add ( "Barney" );
         
         new Sql ( stmt ).add ( l.toArray () );
+        
+        EasyMock.verify ( stmt );
     }
     
     @Test
@@ -103,6 +111,8 @@ public class SqlTest
         EasyMock.replay ( stmt );
         
         new Sql ( stmt ).add ( Arrays.asList ( 1, 2.2 ) );
+        
+        EasyMock.verify ( stmt );
     }
     
     @Test
@@ -121,6 +131,8 @@ public class SqlTest
         l.add ( 11 );
         
         new Sql ( stmt ).add ( l );
+        
+        EasyMock.verify ( stmt );
     }
     
     @Test
@@ -141,6 +153,8 @@ public class SqlTest
         EasyMock.replay ( stmt );
         
         new Sql ( stmt ).add ( 1 ).add ( 2L ).add ( 3.3 ).add ( true ).clear ().add ( "Five" ).add ( Null.BOOLEAN ).add ( Null.STRING );
+        
+        EasyMock.verify ( stmt );
     }
     
     @Test
@@ -155,6 +169,8 @@ public class SqlTest
         EasyMock.replay ( stmt );
         
         assertNull ( new Sql ( stmt ).go () );
+        
+        EasyMock.verify ( stmt );
     }
     
     @Test
@@ -173,6 +189,8 @@ public class SqlTest
         EasyMock.replay ( stmt );
         
         assertNull ( new Sql ( stmt ).go ( 7, "Jackie" ) );
+        
+        EasyMock.verify ( stmt );
     }
     
     @Test
@@ -193,6 +211,8 @@ public class SqlTest
         EasyMock.replay ( stmt );
         
         assertNull ( new Sql ( stmt ).add ( false ).go ( 7, "Jackie" ) );
+        
+        EasyMock.verify ( stmt );
     }
     
     @Test
@@ -215,6 +235,8 @@ public class SqlTest
         l.add ( 11L );
         
         assertNull ( new Sql ( stmt ).go ( l ) );
+        
+        EasyMock.verify ( stmt );
     }
     
     @Test
@@ -231,5 +253,7 @@ public class SqlTest
         EasyMock.replay ( stmt, rs );
         
         assertNotNull ( new Sql ( stmt ).go () );
+        
+        EasyMock.verify ( stmt );
     }
 }

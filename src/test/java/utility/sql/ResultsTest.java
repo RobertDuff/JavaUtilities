@@ -25,6 +25,8 @@ public class ResultsTest
         EasyMock.replay ( md, rs );
         
         assertNull ( new Results ( rs ).single() );
+
+        EasyMock.verify ( md, rs );
     }
     
     @Test
@@ -38,6 +40,8 @@ public class ResultsTest
         EasyMock.replay ( md, rs );
                 
         assertFalse ( new Results ( rs ).iterator ().hasNext () );
+
+        EasyMock.verify ( md, rs );
     }
     
     @Test
@@ -52,6 +56,8 @@ public class ResultsTest
         
         for ( @SuppressWarnings ( "unused" ) ResultSet row : new Results ( rs ) )
             fail ( "Should not have succeeded" );
+
+        EasyMock.verify ( md, rs );
     }
     
     @Test
@@ -68,6 +74,8 @@ public class ResultsTest
         Results r = new Results ( rs );
         
         assertEquals ( 77, r.single ().getInt ( 1 ) );
+
+        EasyMock.verify ( md, rs );
     }
     
     @Test
@@ -86,6 +94,8 @@ public class ResultsTest
         
         assertEquals ( 77, r.single ().getInt ( 1 ) );
         assertEquals ( 88, r.single ().getInt ( 2 ) );
+
+        EasyMock.verify ( md, rs );
     }
     
     @Test
@@ -119,6 +129,8 @@ public class ResultsTest
             fail ( "Should not have next" );
         
         assertFalse ( r.hasNext () );
+
+        EasyMock.verify ( md, rs );
     }
     
     @Test
@@ -144,6 +156,8 @@ public class ResultsTest
         
         for ( ResultSet r : new Results ( rs ) )
             assertEquals ( expect[ pos++ ], r.getInt ( 1 ) );
+
+        EasyMock.verify ( md, rs );
     }
     
     @Test
@@ -188,6 +202,8 @@ public class ResultsTest
         }
 
         assertFalse ( r.hasNext () );
+
+        EasyMock.verify ( md, rs );
    }
     
     @Test
@@ -218,5 +234,7 @@ public class ResultsTest
             assertEquals ( expect[ pos++ ], r.getInt ( 1 ) );
             assertEquals ( expect[ pos++ ], r.getInt ( 2 ) );
         }
+
+        EasyMock.verify ( md, rs );
    }
 }
