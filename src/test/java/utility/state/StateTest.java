@@ -1,15 +1,15 @@
 package utility.state;
 
 import static org.easymock.EasyMock.*;
-import static org.junit.Assert.assertEquals;
 
 import java.util.Collections;
 import java.util.List;
 import java.util.function.Function;
 import java.util.function.Predicate;
 
-import org.junit.BeforeClass;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 
 public class StateTest
 {
@@ -20,58 +20,58 @@ public class StateTest
     
     // Mock Objects
     
-    public static Function<Event,List<Event>> aEnter;
-    public static Function<Event,List<Event>> aExit;
-    public static Function<Event,List<Event>> bEnter;
-    public static Function<Event,List<Event>> bExit;
-    public static Function<Event,List<Event>> cEnter;
-    public static Function<Event,List<Event>> cExit;
-    public static Function<Event,List<Event>> xEnter;
-    public static Function<Event,List<Event>> xExit;
-    public static Function<Event,List<Event>> yEnter;
-    public static Function<Event,List<Event>> yExit;
-    public static Function<Event,List<Event>> pEnter;
-    public static Function<Event,List<Event>> pExit;
-    public static Function<Event,List<Event>> qEnter;
-    public static Function<Event,List<Event>> qExit;
+    public static FuncClass aEnter;
+    public static FuncClass aExit;
+    public static FuncClass bEnter;
+    public static FuncClass bExit;
+    public static FuncClass cEnter;
+    public static FuncClass cExit;
+    public static FuncClass xEnter;
+    public static FuncClass xExit;
+    public static FuncClass yEnter;
+    public static FuncClass yExit;
+    public static FuncClass pEnter;
+    public static FuncClass pExit;
+    public static FuncClass qEnter;
+    public static FuncClass qExit;
 
-    public static Predicate<Event> abGuard;
-    public static Function<Event,List<Event>> abAction;
+    public static PredClass abGuard;
+    public static FuncClass abAction;
 
-    public static Predicate<Event> bcGuard;
-    public static Function<Event,List<Event>> bcAction;
+    public static PredClass bcGuard;
+    public static FuncClass bcAction;
     
-    public static Predicate<Event> caGuard;
-    public static Function<Event,List<Event>> caAction;
+    public static PredClass caGuard;
+    public static FuncClass caAction;
     
-    public static Predicate<Event> bbGuard;
-    public static Function<Event,List<Event>> bbAction;
+    public static PredClass bbGuard;
+    public static FuncClass bbAction;
     
-    public static Predicate<Event> ccGuard;
-    public static Function<Event,List<Event>> ccAction;
+    public static PredClass ccGuard;
+    public static FuncClass ccAction;
     
-    public static Predicate<Event> abcGuard;
-    public static Function<Event,List<Event>> abcAction;
+    public static PredClass abcGuard;
+    public static FuncClass abcAction;
     
-    public static Predicate<Event> adGuard;
-    public static Function<Event,List<Event>> adAction;
+    public static PredClass adGuard;
+    public static FuncClass adAction;
 
-    public static Predicate<Event> dPredicate;
+    public static PredClass dPredicate;
     
-    public static Function<Event,List<Event>> dbAction;
-    public static Function<Event,List<Event>> dcAction;
+    public static FuncClass dbAction;
+    public static FuncClass dcAction;
     
-    public static Predicate<Event> xyGuard;
-    public static Function<Event,List<Event>> xyAction;
+    public static PredClass xyGuard;
+    public static FuncClass xyAction;
     
-    public static Predicate<Event> yxGuard;
-    public static Function<Event,List<Event>> yxAction;
+    public static PredClass yxGuard;
+    public static FuncClass yxAction;
     
-    public static Predicate<Event> pqGuard;
-    public static Function<Event,List<Event>> pqAction;
+    public static PredClass pqGuard;
+    public static FuncClass pqAction;
     
-    public static Predicate<Event> qpGuard;
-    public static Function<Event,List<Event>> qpAction;
+    public static PredClass qpGuard;
+    public static FuncClass qpAction;
     
     // ----------------------------------------
     // State Model Definition
@@ -114,8 +114,8 @@ public class StateTest
     
     public static StateMachine fsm;
 
-    @BeforeClass
-    public static void beforeClass()
+    @BeforeAll
+    public static void beforeAll()
     {        
         setupMocks();
         createABCModel();
@@ -411,46 +411,46 @@ public class StateTest
         replayMocks();
         
         fsm.init();
-        assertEquals ( sA, fsm.currentState() );
-        assertEquals ( "A", fsm.currentState().toString() );
+        Assertions.assertEquals ( sA, fsm.currentState() );
+        Assertions.assertEquals ( "A", fsm.currentState().toString() );
 
         fsm.react ( toB );
-        assertEquals ( sB, fsm.currentState() );
-        assertEquals ( "B", fsm.currentState().toString() );
+        Assertions.assertEquals ( sB, fsm.currentState() );
+        Assertions.assertEquals ( "B", fsm.currentState().toString() );
 
         fsm.react ( toC );
-        assertEquals ( sC, fsm.currentState() );
-        assertEquals ( sX, fsm.currentState().subModels().get( 0 ).currentState() );
-        assertEquals ( sP, fsm.currentState().subModels().get( 1 ).currentState() );
-        assertEquals ( "C([X, P])", fsm.currentState().toString() );
+        Assertions.assertEquals ( sC, fsm.currentState() );
+        Assertions.assertEquals ( sX, fsm.currentState().subModels().get( 0 ).currentState() );
+        Assertions.assertEquals ( sP, fsm.currentState().subModels().get( 1 ).currentState() );
+        Assertions.assertEquals ( "C([X, P])", fsm.currentState().toString() );
 
         fsm.react ( toY );
-        assertEquals ( sC, fsm.currentState() );
-        assertEquals ( sY, fsm.currentState().subModels().get( 0 ).currentState() );
-        assertEquals ( sP, fsm.currentState().subModels().get( 1 ).currentState() );
-        assertEquals ( "C([Y, P])", fsm.currentState().toString() );
+        Assertions.assertEquals ( sC, fsm.currentState() );
+        Assertions.assertEquals ( sY, fsm.currentState().subModels().get( 0 ).currentState() );
+        Assertions.assertEquals ( sP, fsm.currentState().subModels().get( 1 ).currentState() );
+        Assertions.assertEquals ( "C([Y, P])", fsm.currentState().toString() );
 
         fsm.react ( toQ );
-        assertEquals ( sC, fsm.currentState() );
-        assertEquals ( sY, fsm.currentState().subModels().get( 0 ).currentState() );
-        assertEquals ( sQ, fsm.currentState().subModels().get( 1 ).currentState() );
-        assertEquals ( "C([Y, Q])", fsm.currentState().toString() );
+        Assertions.assertEquals ( sC, fsm.currentState() );
+        Assertions.assertEquals ( sY, fsm.currentState().subModels().get( 0 ).currentState() );
+        Assertions.assertEquals ( sQ, fsm.currentState().subModels().get( 1 ).currentState() );
+        Assertions.assertEquals ( "C([Y, Q])", fsm.currentState().toString() );
 
         fsm.react ( toX );
-        assertEquals ( sC, fsm.currentState() );
-        assertEquals ( sX, fsm.currentState().subModels().get( 0 ).currentState() );
-        assertEquals ( sQ, fsm.currentState().subModels().get( 1 ).currentState() );
-        assertEquals ( "C([X, Q])", fsm.currentState().toString() );
+        Assertions.assertEquals ( sC, fsm.currentState() );
+        Assertions.assertEquals ( sX, fsm.currentState().subModels().get( 0 ).currentState() );
+        Assertions.assertEquals ( sQ, fsm.currentState().subModels().get( 1 ).currentState() );
+        Assertions.assertEquals ( "C([X, Q])", fsm.currentState().toString() );
 
         fsm.react ( toP );
-        assertEquals ( sC, fsm.currentState() );
-        assertEquals ( sX, fsm.currentState().subModels().get( 0 ).currentState() );
-        assertEquals ( sP, fsm.currentState().subModels().get( 1 ).currentState() );
-        assertEquals ( "C([X, P])", fsm.currentState().toString() );
+        Assertions.assertEquals ( sC, fsm.currentState() );
+        Assertions.assertEquals ( sX, fsm.currentState().subModels().get( 0 ).currentState() );
+        Assertions.assertEquals ( sP, fsm.currentState().subModels().get( 1 ).currentState() );
+        Assertions.assertEquals ( "C([X, P])", fsm.currentState().toString() );
 
         fsm.react ( toA );
-        assertEquals ( sA, fsm.currentState() );
-        assertEquals ( "A", fsm.currentState().toString() );
+        Assertions.assertEquals ( sA, fsm.currentState() );
+        Assertions.assertEquals ( "A", fsm.currentState().toString() );
 
         verifyMocks();
     }
@@ -465,10 +465,10 @@ public class StateTest
         replayMocks();
         
         fsm.init();
-        assertEquals ( sA, fsm.currentState() );
+        Assertions.assertEquals ( sA, fsm.currentState() );
         
         fsm.react ( toA );
-        assertEquals ( sA, fsm.currentState() );
+        Assertions.assertEquals ( sA, fsm.currentState() );
 
         verifyMocks();
     }
@@ -491,13 +491,13 @@ public class StateTest
         replayMocks();
         
         fsm.init();
-        assertEquals ( sA, fsm.currentState() );
+        Assertions.assertEquals ( sA, fsm.currentState() );
 
         fsm.react ( toB );
-        assertEquals ( sB, fsm.currentState() );
+        Assertions.assertEquals ( sB, fsm.currentState() );
 
         fsm.react ( toB );
-        assertEquals ( sB, fsm.currentState() );
+        Assertions.assertEquals ( sB, fsm.currentState() );
 
         verifyMocks();
     }
@@ -533,16 +533,16 @@ public class StateTest
         replayMocks();
         
         fsm.init();
-        assertEquals ( sA, fsm.currentState() );
+        Assertions.assertEquals ( sA, fsm.currentState() );
 
         fsm.react ( toB );
-        assertEquals ( sB, fsm.currentState() );
+        Assertions.assertEquals ( sB, fsm.currentState() );
 
         fsm.react ( toC );
-        assertEquals ( sC, fsm.currentState() );
+        Assertions.assertEquals ( sC, fsm.currentState() );
 
         fsm.react ( toC );
-        assertEquals ( sC, fsm.currentState() );
+        Assertions.assertEquals ( sC, fsm.currentState() );
         
         verifyMocks();
     }
@@ -569,10 +569,10 @@ public class StateTest
         replayMocks();
         
         fsm.init();
-        assertEquals ( sA, fsm.currentState() );
+        Assertions.assertEquals ( sA, fsm.currentState() );
 
         fsm.react ( toBC );
-        assertEquals ( sC, fsm.currentState() );
+        Assertions.assertEquals ( sC, fsm.currentState() );
         
         verifyMocks();
 
@@ -595,10 +595,10 @@ public class StateTest
         replayMocks();
         
         fsm.init();
-        assertEquals ( sA, fsm.currentState() );
+        Assertions.assertEquals ( sA, fsm.currentState() );
 
         fsm.react ( toB );
-        assertEquals ( sA, fsm.currentState() );
+        Assertions.assertEquals ( sA, fsm.currentState() );
         
         verifyMocks();
     }
@@ -620,10 +620,10 @@ public class StateTest
         replayMocks();
         
         fsm.init();
-        assertEquals ( sA, fsm.currentState() );
+        Assertions.assertEquals ( sA, fsm.currentState() );
         
         fsm.react ( toD );
-        assertEquals ( sB, fsm.currentState() );
+        Assertions.assertEquals ( sB, fsm.currentState() );
         
         verifyMocks();
     }
@@ -647,10 +647,10 @@ public class StateTest
         replayMocks();
         
         fsm.init();
-        assertEquals ( sA, fsm.currentState() );
+        Assertions.assertEquals ( sA, fsm.currentState() );
         
         fsm.react ( toD );
-        assertEquals ( sC, fsm.currentState() );
+        Assertions.assertEquals ( sC, fsm.currentState() );
         
         verifyMocks();
     }
@@ -666,10 +666,10 @@ public class StateTest
         replayMocks();
         
         fsm.init();
-        assertEquals ( sA, fsm.currentState() );
+        Assertions.assertEquals ( sA, fsm.currentState() );
         
         fsm.terminate();
-        assertEquals ( State.TERMINATED_STATE, fsm.currentState() );
+        Assertions.assertEquals ( State.TERMINATED_STATE, fsm.currentState() );
 
         verifyMocks();
     }

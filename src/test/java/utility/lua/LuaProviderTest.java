@@ -1,6 +1,6 @@
 package utility.lua;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.luaj.vm2.Globals;
 
 public class LuaProviderTest

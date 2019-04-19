@@ -1,188 +1,147 @@
 package utility.stopwatch;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertThat;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
 
-import org.hamcrest.BaseMatcher;
-import org.hamcrest.Description;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
+import java.util.function.LongSupplier;
+
+import org.easymock.EasyMock;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 public class StopWatchTest
 {
-	private class TimeCheck extends BaseMatcher<Long>
-	{
-		private static final long MAX_DELTA = 50;
-	
-		private long expectedTime;
-		
-		public TimeCheck ( long time )
-		{
-			expectedTime = time;
-		}
-		
-		@Override
-		public boolean matches ( Object item )
-		{
-			Long time = ( Long ) item;
-			
-			return Math.abs ( time - expectedTime ) <= MAX_DELTA;
-		}
+    public static final LongSupplier mockTimeSupplier = EasyMock.createMock ( LongSupplier.class );
+    
+    @BeforeEach
+    public void beforeEach()
+    {
+        EasyMock.reset ( mockTimeSupplier );
+    }
+    
+    @AfterEach
+    public void afterEach()
+    {
+        EasyMock.verify ( mockTimeSupplier );
+    }
+    
+    @Test
+    public void testZero()
+    {
+        EasyMock.replay ( mockTimeSupplier );
+        
+        StopWatch stopWatch = new StopWatch ( mockTimeSupplier );
 
-		@Override
-		public void describeTo ( Description description )
-		{
-			description.appendText ( "Within " + MAX_DELTA + " of " + expectedTime );
-		}
-	}
-	
-	@Before
-	public void setUp() throws Exception
-	{
-	}
-
-	@After
-	public void tearDown() throws Exception
-	{
-	}
-
-	@Test
-	public void testStopWatch() throws InterruptedException
-	{
-		long[] laps = null;
-		
-		final StopWatch s = new StopWatch ( 3 );
-		assertTrue ( s.isReset() );
-		assertFalse ( s.isRunning() );
-		assertFalse ( s.isStopped() );
-		illegalState ( new Runnable() { public void run() { s.laps(); } } );
-		illegalState ( new Runnable() { public void run() { s.lap(); } } );
-		illegalState ( new Runnable() { public void run() { s.stop(); } } );
-		illegalState ( new Runnable() { public void run() { s.startTime(); } } );
-		illegalState ( new Runnable() { public void run() { s.endTime(); } } );
-		illegalState ( new Runnable() { public void run() { s.currentElapsedTime(); } } );
-		illegalState ( new Runnable() { public void run() { s.finalElapsedTime(); } } );
-		
-		s.start();
-		assertFalse ( s.isReset() );
-		assertTrue ( s.isRunning() );
-		assertFalse ( s.isStopped() );
-		illegalState ( new Runnable() { public void run() { s.start(); } } );
-		illegalState ( new Runnable() { public void run() { s.finalElapsedTime(); } } );
-		
-		long st = s.startTime();
-
-		Thread.sleep ( 1000 );
-		
-		long ct = s.currentElapsedTime();
-		assertThat ( ct, new TimeCheck ( 1000 ) );
-		
-		s.lap();
-		Thread.sleep ( 1000 );
-		s.lap();
-		Thread.sleep ( 1000 );
-		s.lap();
-		arrayBounds ( new Runnable() { public void run() { s.lap(); } } );
-		
-		Thread.sleep ( 1000 );
-		
-		s.stop();
-		assertFalse ( s.isReset() );
-		assertFalse ( s.isRunning() );
-		assertTrue ( s.isStopped() );
-		assertEquals ( 5, s.laps().length );
-		illegalState ( new Runnable() { public void run() { s.start(); } } );
-		illegalState ( new Runnable() { public void run() { s.stop(); } } );
-		illegalState ( new Runnable() { public void run() { s.lap(); } } );
-		
-		long et = s.endTime();
-		long ft = s.finalElapsedTime();
-		assertThat ( ft, new TimeCheck ( 4000 ) );
-		
-		laps = s.laps();
-		
-		assertEquals ( st, laps[ 0 ] );
-		assertEquals ( et, laps[ 4 ] );
-		
-		long[] spans = s.spans();
-		
-		assertEquals ( 4, spans.length );
-		assertThat ( spans[ 0 ], new TimeCheck ( 1000 ) );
-		assertThat ( spans[ 1 ], new TimeCheck ( 1000 ) );
-		assertThat ( spans[ 2 ], new TimeCheck ( 1000 ) );
-		assertThat ( spans[ 3 ], new TimeCheck ( 1000 ) );
-	}
-	
-	@Test
-	public void testRunnableStopWatch()
-	{
-		Runnable runnable = new Runnable()
-		{
-			@Override
-			public void run()
-			{
-				try 
-				{
-					Thread.sleep ( 2345 );
-				} 
-				catch ( InterruptedException e )
-				{
-					e.printStackTrace();
-				}
-			}
-		};
-		
-		RunnableStopWatch r = new RunnableStopWatch ( runnable );
-		
-		assertThat ( "A", r.run(), new TimeCheck ( 2345 ) );
-		assertThat ( "B", r.run(), new TimeCheck ( 2345 ) );
-		assertThat ( "C", r.run(), new TimeCheck ( 2345 ) );
-		assertThat ( "D", r.run(), new TimeCheck ( 2345 ) );
-	}
-	
-	private void illegalState ( Runnable runnable )
-	{
-		boolean fail = true;
-		
-		try
-		{
-			runnable.run();
-		}
-		catch ( IllegalStateException e )
-		{
-			fail = false;
-		}
-		catch ( Exception e )
-		{
-			fail ( "Unexpected Exception: " + e.getMessage() );
-		}
-		
-		if ( fail )
-			fail ( "Expected IllegalStateException" );
-	}
-	
-	private void arrayBounds ( Runnable runnable )
-	{
-		boolean fail = true;
-		
-		try
-		{
-			runnable.run();
-		}
-		catch ( ArrayIndexOutOfBoundsException e )
-		{
-			fail = false;
-		}
-		catch ( Exception e )
-		{
-			fail ( "Unexpected Exception: " + e.getMessage() );
-		}
-		
-		if ( fail )
-			fail ( "Expected ArrayIndexOutOfBoundsException" );
-	}
+        Assertions.assertEquals ( Long.MIN_VALUE, stopWatch.start () );
+        Assertions.assertEquals ( Long.MAX_VALUE, stopWatch.end () );
+        Assertions.assertEquals ( Long.MIN_VALUE, stopWatch.duration () );
+    }
+    
+    @Test
+    public void testOne()
+    {
+        mockTimeSupplier.getAsLong ();
+        EasyMock.expectLastCall ().andReturn ( 1 );
+        
+        EasyMock.replay ( mockTimeSupplier );
+        
+        StopWatch stopWatch = new StopWatch ( mockTimeSupplier );
+        stopWatch.mark ();
+        
+        Assertions.assertEquals ( 1, stopWatch.start () );
+        Assertions.assertEquals ( 1, stopWatch.end () );
+        Assertions.assertEquals ( 0, stopWatch.duration () );
+    }
+    
+    @Test
+    public void testTwo()
+    {
+        mockTimeSupplier.getAsLong ();
+        EasyMock.expectLastCall ().andReturn ( 1 );
+        
+        mockTimeSupplier.getAsLong ();
+        EasyMock.expectLastCall ().andReturn ( 3 );
+        
+        EasyMock.replay ( mockTimeSupplier );
+        
+        StopWatch stopWatch = new StopWatch ( mockTimeSupplier );
+        stopWatch.mark ();
+        stopWatch.mark ();
+        
+        Assertions.assertEquals ( 1, stopWatch.start () );
+        Assertions.assertEquals ( 3, stopWatch.end () );
+        Assertions.assertEquals ( 2, stopWatch.duration () );
+    }
+    
+    @Test
+    public void testThree()
+    {
+        mockTimeSupplier.getAsLong ();
+        EasyMock.expectLastCall ().andReturn ( 1 );
+        
+        mockTimeSupplier.getAsLong ();
+        EasyMock.expectLastCall ().andReturn ( 3 );
+        
+        mockTimeSupplier.getAsLong ();
+        EasyMock.expectLastCall ().andReturn ( 8 );
+        
+        EasyMock.replay ( mockTimeSupplier );
+        
+        StopWatch stopWatch = new StopWatch ( mockTimeSupplier );
+        stopWatch.mark ();
+        stopWatch.mark ();
+        stopWatch.mark ();
+        
+        Assertions.assertEquals ( 1, stopWatch.start () );
+        Assertions.assertEquals ( 8, stopWatch.end () );
+        
+        Assertions.assertEquals ( 7, stopWatch.duration () );
+        Assertions.assertEquals ( 0, stopWatch.duration ( 0 ) );
+        Assertions.assertEquals ( 2, stopWatch.duration ( 1 ) );
+        Assertions.assertEquals ( 5, stopWatch.duration ( 1, 2 ) );
+    }
+    
+    @Test
+    public void testErrors()
+    {
+        mockTimeSupplier.getAsLong ();
+        EasyMock.expectLastCall ().andReturn ( 1 );
+        
+        mockTimeSupplier.getAsLong ();
+        EasyMock.expectLastCall ().andReturn ( 3 );
+        
+        EasyMock.replay ( mockTimeSupplier );
+        
+        StopWatch stopWatch = new StopWatch ( mockTimeSupplier );
+        
+        Assertions.assertEquals ( Long.MIN_VALUE, stopWatch.duration () );
+        Assertions.assertEquals ( Long.MIN_VALUE, stopWatch.duration ( -1 ) );
+        Assertions.assertEquals ( Long.MIN_VALUE, stopWatch.duration ( 0, 1 ) );
+        
+        stopWatch.mark ();
+        
+        Assertions.assertEquals ( Long.MIN_VALUE, stopWatch.duration ( -1 ) );
+        Assertions.assertEquals ( Long.MAX_VALUE, stopWatch.duration ( 0, 7 ) );
+        
+        stopWatch.mark ();
+        
+        Assertions.assertEquals ( Long.MIN_VALUE, stopWatch.duration ( -1 ) );
+        Assertions.assertEquals ( Long.MAX_VALUE, stopWatch.duration ( 0, 7 ) );
+    }
+    
+    @Test
+    public void testRun()
+    {
+        mockTimeSupplier.getAsLong ();
+        EasyMock.expectLastCall ().andReturn ( 77 );
+        
+        mockTimeSupplier.getAsLong ();
+        EasyMock.expectLastCall ().andReturn ( 83 );
+        
+        EasyMock.replay ( mockTimeSupplier );
+        
+        StopWatch stopWatch = new StopWatch ( mockTimeSupplier );
+        
+        Assertions.assertEquals ( 6, stopWatch.run ( ( ) -> {} ) );
+    }
 }

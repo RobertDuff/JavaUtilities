@@ -1,10 +1,9 @@
 package utility.lua;
 
-import static org.junit.Assert.*;
-
 import java.io.IOException;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 import org.luaj.vm2.Globals;
 import org.luaj.vm2.lib.jse.JsePlatform;
 
@@ -25,9 +24,9 @@ public class FunctionTest
 				"end",
 				"return sum" );
 						
-		assertEquals ( 3, sum.call().toint() );
-		assertEquals ( 5, sum.call ( 2 ).toint ( 1 ) );
-		assertEquals ( 7, sum.call ( 1, -1, 4 ).toint ( 1 ) );
+		Assertions.assertEquals ( 3, sum.call().toint() );
+		Assertions.assertEquals ( 5, sum.call ( 2 ).toint ( 1 ) );
+		Assertions.assertEquals ( 7, sum.call ( 1, -1, 4 ).toint ( 1 ) );
 	}	
 
 	@Test
@@ -45,8 +44,8 @@ public class FunctionTest
 				"end",
 				"return sum" );
 						
-		assertEquals ( 3, sum.call().toint() );
-		assertEquals ( 5, sum.call ( new VarargsBuilder().add ( 2 ).build() ).toint() );
-		assertEquals ( 7, sum.call ( new VarargsBuilder().add ( 1 ).add ( ( long ) -1 ).add ( 4.0 ).build() ).toint() );
+		Assertions.assertEquals ( 3, sum.call().toint() );
+		Assertions.assertEquals ( 5, sum.call ( new VarargsBuilder().add ( 2 ).build() ).toint() );
+		Assertions.assertEquals ( 7, sum.call ( new VarargsBuilder().add ( 1 ).add ( ( long ) -1 ).add ( 4.0 ).build() ).toint() );
 	}	
 }

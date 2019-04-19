@@ -1,142 +1,247 @@
 package utility.stopwatch;
 
-import java.util.Arrays;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.concurrent.Callable;
+import java.util.function.LongSupplier;
 
-public class StopWatch 
+/**
+ * This class represents a StopWatch Timer
+ * 
+ * It is capable of marking timepoints, and calculating durations between marked
+ * timepoints.
+ * 
+ * It is also able time the execution of a {@link Runnable} object. It can also
+ * act as a {@link Runnable} or {@link Callable} wrrapper around code for timing
+ * parallel execution.
+ * 
+ * @author Rob Duff
+ */
+public class StopWatch implements Runnable, Callable<Long>
 {
-	private static final int DEFAULT_MAX_LAPS = 100;
+    /**
+     * Supplier of the current time point.
+     */
+	private LongSupplier timeSupplier;
 	
-	private int     lapIndex;
-	private long[]  lapTimes;
-	private boolean running;
+    /**
+     * Runnable Code to time.
+     */
+	private Runnable runnable;
 	
-	public StopWatch()
+    /**
+     * List of Marked Time Points.
+     */
+	private List<Long>  marks = new ArrayList<>();
+    
+    /**
+     * Create a new {@code StopWatch} object.
+     * <p></p>
+     * Uses {@code System}.{@code currentTimeMillis}() as the time provider.
+     * 
+     * @see java.lang.System#currentTimeMillis()
+     */
+    public StopWatch()
+    {
+        this ( System::currentTimeMillis );
+    }
+    
+    /**
+     * Create a new {@code StopWatch} object.
+     *
+     * @param timeSupplier
+     *            The time point supplier. There is no assumption on the
+     *            time-resolution.
+     */
+    public StopWatch ( LongSupplier timeSupplier )
+    {
+        this ( null, timeSupplier );        
+    }
+    
+    /**
+     * Create a new {@code StopWatch} object capable of acting as a {@link Runnable}
+     * or {@link Callable} object that can measure the duration of the supplied
+     * {@code Runnable}.
+     * <p></p>
+     * Uses {@code System}.{@code currentTimeMillis}() as the time provider.
+     * 
+     * @param runnable
+     *            The {@link Runnable} object to time.
+     * 
+     * @see java.lang.System#currentTimeMillis()
+     */
+    public StopWatch ( Runnable runnable )
+    {
+        this ( runnable, System::currentTimeMillis );
+    }
+    
+    /**
+     * Create a new {@code StopWatch} object capable of acting as a {@link Runnable}
+     * or {@link Callable} object that can measure the duration of the supplied
+     * {@code Runnable}.
+     * 
+     * @param runnable
+     *            The {@link Runnable} object to time.
+     * @param timeSupplier
+     *            The time point supplier. There is no assumption on the
+     *            time-resolution.
+     */
+    public StopWatch ( Runnable runnable, LongSupplier timeSupplier )
+    {
+        this.runnable = runnable;
+        this.timeSupplier = timeSupplier;        
+    }
+    
+    /**
+     * Clears all marked Time Points.
+     */
+    public void reset()
+    {
+        marks.clear ();
+    }
+    
+    /**
+     * Records the current time point.
+     */
+	public void mark()
 	{
-		this ( DEFAULT_MAX_LAPS );
+		marks.add ( timeSupplier.getAsLong() );
 	}
 	
-	public StopWatch ( int maxLaps )
+    /**
+     * @return The first marked Time Point, or {@code Long.MIN_VALUE} if no time
+     *         points have been marked.
+     */
+	public long start()
 	{
-		if ( maxLaps < 1 )
-			throw new IllegalArgumentException ( "StopWatch Max Laps must be >=1" );
-		
-		lapTimes = new long[ maxLaps+2 ];
-		
-		reset();
+	    if ( marks.isEmpty () )
+	        return Long.MIN_VALUE;
+	    
+	    return marks.get ( 0 );
 	}
 	
-	public void reset()
+    /**
+     * @return The last marked Time Point, or {@code Long.MAX_VALUE} if no time
+     *         points have been marked.
+     */
+	public long end()
 	{
-		running = false;
-		lapIndex  = 0;
-		
-		Arrays.fill ( lapTimes, -1 );
+        if ( marks.isEmpty () )
+            return Long.MAX_VALUE;
+        
+        return marks.get ( marks.size ()-1 );
 	}
-	
-	public void start()
-	{
-		long time = System.currentTimeMillis();
-		
-		if ( !isReset() )
-			throw new IllegalStateException ( "StopWatch is not Ready To Start" );
-		
-		running = true;
-		
-		pushTime ( time );
-	}
-	
-	public void stop()
-	{
-		long time = System.currentTimeMillis();
-		
-		if ( !isRunning() )
-			throw new IllegalStateException ( "StopWatch is not Running." );
-		
-		pushTime ( time );
-		
-		running = false;
-	}
-	
-	public void lap()
-	{
-		long time = System.currentTimeMillis();
-		
-		if ( !isRunning() )
-			throw new IllegalStateException ( "StopWatch is not Running." );
-		
-		if ( lapIndex >= lapTimes.length-1 )
-			throw new ArrayIndexOutOfBoundsException ( String.format ( "StopWatch Configured for a Maximum of %d Laps", lapTimes.length-2 ) );
-		
-		pushTime ( time );
-	}
-	
-	private void pushTime ( long time )
-	{
-		if ( lapIndex >= lapTimes.length )
-			throw new ArrayIndexOutOfBoundsException ( String.format ( "Time Array Bounds Exceeded" ) );
-		
-		lapTimes[ lapIndex++ ] = time;
-	}
-	
-	public long startTime()
-	{
-		if ( isReset() )
-			throw new IllegalStateException ( "StopWatch as not been Started" );
-		
-		return lapTimes[ 0 ];
-	}
-	
-	public long endTime()
-	{
-		if ( !isStopped() )
-			throw new IllegalStateException ( "StopWatch has not been Stopped" );
-		
-		return lapTimes[ lapIndex-1 ];
-	}
-	
-	public long[] laps()
-	{
-		if ( isReset() )
-			throw new IllegalStateException ( "StopWatch as not been Started" );
 
-		return Arrays.copyOf ( lapTimes, lapIndex );
+    /**
+     * @return The difference between the first and last marked Time Points. If only
+     *         one Time Point has been marked, then returns 0. If no Time Points
+     *         have been marked, then returns {@code Long.MIN_VALUE}
+     */
+	public long duration()
+	{
+	    return duration ( marks.size ()-1 );
 	}
 	
-	public long[] spans()
+    /**
+     * Returns the duration between the first marked Time Point and the specified
+     * Time Point.
+     * 
+     * @param endMark
+     *            The Zero-Based Index of the end Time Point
+     * @return The duration. If the {@code endMark} is beyond the last marked Time
+     *         Point, returns {@code Long.MAX_VALUE}.
+     */
+	public long duration ( int endMark )
 	{
-		if ( isReset() )
-			throw new IllegalStateException ( "StopWatch as not been Started" );
+	    return duration ( 0, endMark );
+	}
+	
+    /**
+     * Returns the duration between two marked Time Points.
+     * 
+     * @param startMark
+     *            The Zero-Based Index of the first marked Time Point.
+     * @param endMark
+     *            The Zero-Based Index of the second marked Time Point.
+     * @return The difference between the two Time Points. If either
+     *         {@code startMark} or {@code endMark} are less than Zero, return
+     *         {@code Long.MIN_VALUE}. If either is greater than the last marked
+     *         Time Point, returns {@code Long.MAX_VALUE}.
+     */
+	public long duration ( int startMark, int endMark )
+	{
+	    if ( marks.isEmpty () )
+	        return Long.MIN_VALUE;
+	    
+	    if ( startMark < 0 || endMark < 0 )
+	        return Long.MIN_VALUE;
+	    
+	    if ( startMark >= marks.size () || endMark >= marks.size () )
+	        return Long.MAX_VALUE;
+	    
+	    int start = Math.min ( startMark, endMark );
+	    int end = Math.max ( startMark, endMark );
+	    
+	    return marks.get ( end ) - marks.get ( start );
+	}
 
-		long[] spans = new long[ lapIndex-1 ];
-		
-		for ( int i = 1; i < lapIndex; i++ )
-			spans[ i-1 ] = lapTimes[ i ] - lapTimes[ i-1 ];
-		
-		return spans;
-	}
-	
-	public long finalElapsedTime()
+    /**
+     * @return The {@link List} of marked Time Points.
+     */
+	public List<Long> marks()
 	{
-		return endTime() - startTime();
+	    return Collections.unmodifiableList ( marks );
 	}
 	
+    /**
+     * @return The duration between the first marked Time Point and the current Time
+     *         Point (as returned by the timeSupplier). If there are no marked Time
+     *         Points, return {@code Long.MAX_VALUE}.
+     */
 	public long currentElapsedTime()
 	{
-		return System.currentTimeMillis() - startTime();
+	    if ( marks.isEmpty () )
+	        return Long.MAX_VALUE;
+	    
+		return timeSupplier.getAsLong() - start();
 	}
-	
-	public boolean isReset()
-	{
-		return lapIndex == 0;
-	}
-	
-	public boolean isRunning()
-	{
-		return running;
-	}
-	
-	public boolean isStopped()
-	{
-		return !isReset() && !isRunning();
-	}
+
+    @Override
+    public Long call () throws Exception
+    {
+        return run ( runnable );
+    }
+
+    @Override
+    public void run ()
+    {
+        run ( runnable );
+    }
+    
+    /**
+     * Records the duration of a code segment.
+     * 
+     * @param runnable
+     *            The code to run.
+     * @return The time the code took to run.
+     */
+    public long run ( Runnable runnable )
+    {
+        marks.clear ();
+        mark();
+
+        try
+        {
+            runnable.run ();
+        }
+        catch ( Throwable e )
+        {
+            e.printStackTrace();
+        }
+        
+        mark();
+        
+        return duration ();
+    }
 }

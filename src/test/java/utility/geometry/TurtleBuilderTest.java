@@ -1,8 +1,7 @@
 package utility.geometry;
 
-import static org.junit.Assert.*;
-
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 public class TurtleBuilderTest
 {
@@ -14,10 +13,10 @@ public class TurtleBuilderTest
 		LineSegment l = new LineSegment ( -3, -1, 2, 4 );
 		Turtle t = TurtleBuilder.build ( l );
 
-		assertEquals ( -3, t.point ().x (), TOLERANCE );
-		assertEquals ( -1, t.point ().y (), TOLERANCE );
-		assertEquals ( Math.PI / 4, t.theta (), TOLERANCE );
-		assertEquals ( 5 * Math.sqrt ( 2 ), t.radius (), TOLERANCE );
+		Assertions.assertEquals ( -3, t.point ().x (), TOLERANCE );
+		Assertions.assertEquals ( -1, t.point ().y (), TOLERANCE );
+		Assertions.assertEquals ( Math.PI / 4, t.theta (), TOLERANCE );
+		Assertions.assertEquals ( 5 * Math.sqrt ( 2 ), t.radius (), TOLERANCE );
 	}
 
 	@Test
@@ -25,10 +24,10 @@ public class TurtleBuilderTest
 	{
 		Turtle t = TurtleBuilder.build ( new Point ( -5, 2 ), new Point ( -1, -2 ) );
 
-		assertEquals ( -5, t.point ().x (), TOLERANCE );
-		assertEquals (  2, t.point ().y (), TOLERANCE );
-		assertEquals ( -Math.PI / 4, t.theta (), TOLERANCE );
-		assertEquals ( 4 * Math.sqrt ( 2 ), t.radius (), TOLERANCE );
+		Assertions.assertEquals ( -5, t.point ().x (), TOLERANCE );
+		Assertions.assertEquals (  2, t.point ().y (), TOLERANCE );
+		Assertions.assertEquals ( -Math.PI / 4, t.theta (), TOLERANCE );
+		Assertions.assertEquals ( 4 * Math.sqrt ( 2 ), t.radius (), TOLERANCE );
 	}
 
 	@Test
@@ -36,9 +35,9 @@ public class TurtleBuilderTest
 	{
 		Turtle t = TurtleBuilder.build ( 4, -2, 4, 4 );
 
-		assertEquals (  4, t.point ().x (), TOLERANCE );
-		assertEquals ( -2, t.point ().y (), TOLERANCE );
-		assertEquals ( Math.PI / 2, t.theta (), TOLERANCE );
-		assertEquals ( 6, t.radius (), TOLERANCE );
+		Assertions.assertEquals (  4, t.point ().x (), TOLERANCE );
+		Assertions.assertEquals ( -2, t.point ().y (), TOLERANCE );
+		Assertions.assertEquals ( Math.PI / 2, t.theta (), TOLERANCE );
+		Assertions.assertEquals ( 6, t.radius (), TOLERANCE );
 	}
 }

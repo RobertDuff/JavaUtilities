@@ -1,20 +1,19 @@
 package utility.protocol;
 
-import static org.junit.Assert.*;
-
 import java.nio.BufferOverflowException;
 import java.nio.BufferUnderflowException;
 import java.nio.ByteBuffer;
 
-import org.junit.BeforeClass;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 
 public class BufferTest
 {
 	public static ByteBuffer b;
 	
-	@BeforeClass
-	public static void beforeClass()
+	@BeforeAll
+	public static void beforeAll()
 	{
 		b = ByteBuffer.allocate ( 10 );
 	}
@@ -22,10 +21,10 @@ public class BufferTest
 	@Test
 	public void test()
 	{
-		assertEquals ( 10, b.capacity() );
+		Assertions.assertEquals ( 10, b.capacity() );
 		
-		assertEquals ( 0, b.position() );
-		assertEquals ( 10, b.limit () );
+		Assertions.assertEquals ( 0, b.position() );
+		Assertions.assertEquals ( 10, b.limit () );
 		
 		b.put ( ( byte )  1 );
 		b.put ( ( byte )  2 );
@@ -34,36 +33,36 @@ public class BufferTest
 		b.put ( ( byte )  5 );
 		b.put ( ( byte )  6 );
 		
-		assertEquals ( 6, b.position() );
-		assertEquals ( 10, b.limit() );
+		Assertions.assertEquals ( 6, b.position() );
+		Assertions.assertEquals ( 10, b.limit() );
 		
 		b.put ( ( byte )  7 );
 		
-		assertEquals ( 7, b.position() );
-		assertEquals ( 10, b.limit() );
+		Assertions.assertEquals ( 7, b.position() );
+		Assertions.assertEquals ( 10, b.limit() );
 
 		b.flip();
 		
-		assertEquals ( 0, b.position() );
-		assertEquals ( 7, b.limit() );
+		Assertions.assertEquals ( 0, b.position() );
+		Assertions.assertEquals ( 7, b.limit() );
 		
-		assertEquals (  1, b.get() );
-		assertEquals (  2, b.get() );
+		Assertions.assertEquals (  1, b.get() );
+		Assertions.assertEquals (  2, b.get() );
 
-		assertEquals ( 2, b.position() );
-		assertEquals ( 7, b.limit() );
+		Assertions.assertEquals ( 2, b.position() );
+		Assertions.assertEquals ( 7, b.limit() );
 		
-		assertEquals (  3, b.get() );
-		assertEquals (  4, b.get() );
-		assertEquals (  5, b.get() );
+		Assertions.assertEquals (  3, b.get() );
+		Assertions.assertEquals (  4, b.get() );
+		Assertions.assertEquals (  5, b.get() );
 
-		assertEquals ( 5, b.position() );
-		assertEquals ( 7, b.limit() );
+		Assertions.assertEquals ( 5, b.position() );
+		Assertions.assertEquals ( 7, b.limit() );
 		
 		b.compact();
 		
-		assertEquals ( 2, b.position() );
-		assertEquals ( 10, b.limit() );
+		Assertions.assertEquals ( 2, b.position() );
+		Assertions.assertEquals ( 10, b.limit() );
 
 		b.put ( ( byte )  8 );
 		b.put ( ( byte )  9 );
@@ -74,52 +73,36 @@ public class BufferTest
 		b.put ( ( byte ) 14 );
 		b.put ( ( byte ) 15 );
 		
-		assertEquals ( 10, b.position() );
-		assertEquals ( 10, b.limit() );
+		Assertions.assertEquals ( 10, b.position() );
+		Assertions.assertEquals ( 10, b.limit() );
 	
-		try
-		{
-			b.put ( ( byte ) 0 );
-			fail ( "Unexpected Success" );
-		}
-		catch ( BufferOverflowException e )
-		{
-			// Expected Exception
-		}
+		Assertions.assertThrows ( BufferOverflowException.class, () -> b.put ( ( byte ) 0 ) );
 		
 		b.flip();
 		
-		assertEquals (  0, b.position() );
-		assertEquals ( 10, b.limit() );
+		Assertions.assertEquals (  0, b.position() );
+		Assertions.assertEquals ( 10, b.limit() );
 		
-		assertEquals (  6, b.get() );
-		assertEquals (  7, b.get() );
-		assertEquals (  8, b.get() );
-		assertEquals (  9, b.get() );
-		assertEquals ( 10, b.get() );
-		assertEquals ( 11, b.get() );
-		assertEquals ( 12, b.get() );
-		assertEquals ( 13, b.get() );
-		assertEquals ( 14, b.get() );
-		assertEquals ( 15, b.get() );		
+		Assertions.assertEquals (  6, b.get() );
+		Assertions.assertEquals (  7, b.get() );
+		Assertions.assertEquals (  8, b.get() );
+		Assertions.assertEquals (  9, b.get() );
+		Assertions.assertEquals ( 10, b.get() );
+		Assertions.assertEquals ( 11, b.get() );
+		Assertions.assertEquals ( 12, b.get() );
+		Assertions.assertEquals ( 13, b.get() );
+		Assertions.assertEquals ( 14, b.get() );
+		Assertions.assertEquals ( 15, b.get() );		
 		
-		assertEquals ( 10, b.position() );
-		assertEquals ( 10, b.limit() );
+		Assertions.assertEquals ( 10, b.position() );
+		Assertions.assertEquals ( 10, b.limit() );
 		
-		try
-		{
-			b.get ();
-			fail ( "Unexpected Success" );
-		}
-		catch ( BufferUnderflowException e )
-		{
-			// Expected Exception
-		}
+		Assertions.assertThrows ( BufferUnderflowException.class, () -> b.get () );
 		
 		b.clear();
 		
-		assertEquals (  0, b.position() );
-		assertEquals ( 10, b.limit() );
+		Assertions.assertEquals (  0, b.position() );
+		Assertions.assertEquals ( 10, b.limit() );
 		
 		b.put ( ( byte ) 16 );
 		b.put ( ( byte ) 17 );
@@ -127,47 +110,47 @@ public class BufferTest
 		b.put ( ( byte ) 19 );
 		b.put ( ( byte ) 20 );
 		
-		assertEquals (  5, b.position() );
-		assertEquals ( 10, b.limit() );
+		Assertions.assertEquals (  5, b.position() );
+		Assertions.assertEquals ( 10, b.limit() );
 		
 		b.flip();
 		
-		assertEquals (  0, b.position() );
-		assertEquals (  5, b.limit() );
+		Assertions.assertEquals (  0, b.position() );
+		Assertions.assertEquals (  5, b.limit() );
 		
 		b.compact();
 		
-		assertEquals (  5, b.position() );
-		assertEquals ( 10, b.limit() );
+		Assertions.assertEquals (  5, b.position() );
+		Assertions.assertEquals ( 10, b.limit() );
 		
 		b.flip();
 		
-		assertEquals (  0, b.position() );
-		assertEquals (  5, b.limit() );
+		Assertions.assertEquals (  0, b.position() );
+		Assertions.assertEquals (  5, b.limit() );
 
-		assertEquals ( 16, b.get() );
-		assertEquals ( 17, b.get() );
-		assertEquals ( 18, b.get() );
+		Assertions.assertEquals ( 16, b.get() );
+		Assertions.assertEquals ( 17, b.get() );
+		Assertions.assertEquals ( 18, b.get() );
 		
-		assertEquals (  3, b.position() );
-		assertEquals (  5, b.limit() );
+		Assertions.assertEquals (  3, b.position() );
+		Assertions.assertEquals (  5, b.limit() );
 		
 		b.clear();
 		
-		assertEquals (  0, b.position() );
-		assertEquals ( 10, b.limit() );
+		Assertions.assertEquals (  0, b.position() );
+		Assertions.assertEquals ( 10, b.limit() );
 		
 		b.put ( ( byte ) 21 );
 		
-		assertEquals (  1, b.position() );
-		assertEquals ( 10, b.limit() );
+		Assertions.assertEquals (  1, b.position() );
+		Assertions.assertEquals ( 10, b.limit() );
 		
 		b.flip();
 		
-		assertEquals (  0, b.position() );
-		assertEquals (  1, b.limit() );
+		Assertions.assertEquals (  0, b.position() );
+		Assertions.assertEquals (  1, b.limit() );
 		
-		assertEquals ( 21, b.get() );
+		Assertions.assertEquals ( 21, b.get() );
 	}
 	
 	public void nothing()
@@ -184,14 +167,14 @@ public class BufferTest
 		b.put ( ( byte ) 29 );
 		b.put ( ( byte ) 30 );
 
-		assertEquals ( 22, b.get() );
-		assertEquals ( 23, b.get() );
-		assertEquals ( 24, b.get() );
-		assertEquals ( 25, b.get() );
-		assertEquals ( 26, b.get() );
-		assertEquals ( 27, b.get() );
-		assertEquals ( 28, b.get() );
-		assertEquals ( 29, b.get() );
-		assertEquals ( 30, b.get() );
+		Assertions.assertEquals ( 22, b.get() );
+		Assertions.assertEquals ( 23, b.get() );
+		Assertions.assertEquals ( 24, b.get() );
+		Assertions.assertEquals ( 25, b.get() );
+		Assertions.assertEquals ( 26, b.get() );
+		Assertions.assertEquals ( 27, b.get() );
+		Assertions.assertEquals ( 28, b.get() );
+		Assertions.assertEquals ( 29, b.get() );
+		Assertions.assertEquals ( 30, b.get() );
 }
 }

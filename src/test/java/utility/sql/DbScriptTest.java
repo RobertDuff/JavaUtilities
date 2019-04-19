@@ -1,6 +1,5 @@
 package utility.sql;
 
-import static org.junit.Assert.assertEquals;
 
 import java.io.IOException;
 import java.io.StringReader;
@@ -10,8 +9,10 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import org.easymock.EasyMock;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+
 import static org.easymock.EasyMock.matches;
-import org.junit.Test;
 
 public class DbScriptTest
 {    
@@ -34,7 +35,7 @@ public class DbScriptTest
         
         Results results = new DbScript ( conn ).run ( new StringReader ( "\n\n;\n\n;;\n\nblock\nbegin\n\tstmt;\nend;\n\nstmt;\n\n" ) );
         
-        assertEquals ( rs, results.single () );
+        Assertions.assertEquals ( rs, results.single () );
         
         EasyMock.verify ( conn, stmt, rs );
     }

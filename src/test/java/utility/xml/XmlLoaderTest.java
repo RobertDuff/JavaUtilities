@@ -1,8 +1,7 @@
 package utility.xml;
 
-import static org.junit.Assert.assertNotNull;
-
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.Assertions;
 
 public class XmlLoaderTest
 {
@@ -10,13 +9,13 @@ public class XmlLoaderTest
 	public void testResource() 
 	{
 		XmlNode xmlNode = XmlLoader.load ( "family.xml" );
-		assertNotNull ( xmlNode );
+		Assertions.assertNotNull ( xmlNode );
 	}
 
 	@Test
 	public void testResourceWithSchema() 
 	{
 		XmlNode xmlNode = XmlLoader.load ( "family.xml", "family.xsd" );
-		assertNotNull ( xmlNode );
+		Assertions.assertNotNull ( xmlNode );
 	}
 }

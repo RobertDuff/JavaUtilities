@@ -1,12 +1,11 @@
 package utility.protocol;
 
-import static org.junit.Assert.assertEquals;
-
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 
-import org.junit.Ignore;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
 
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
@@ -26,13 +25,13 @@ public class ProtocolTest
 		protocol.getTxChain().add ( s -> { sp.setValue ( ( String ) s ); return null; } );
 		
 		protocol.sendAsync ( "hello" );
-		assertEquals ( "HELLO", sp.getValue() );
+		Assertions.assertEquals ( "HELLO", sp.getValue() );
 	}
 	
 	@Test
 	
 	//TODO: This Test Doesn't work on Windows, but does on Unix. So go figure.
-	@Ignore
+	@Disabled
 	public void testSync() throws Exception
 	{
 		Protocol protocol = new Protocol();
@@ -52,7 +51,7 @@ public class ProtocolTest
 		
 		String response = ( String ) protocol.send ( data );
 		
-		assertEquals ( "HELLO.Response", response );
+		Assertions.assertEquals ( "HELLO.Response", response );
 	}
 	
 	@Test
@@ -69,7 +68,7 @@ public class ProtocolTest
 		
 		Thread.sleep ( 100 );
 		
-		assertEquals ( "Incoming.received", sp.getValue() );
+		Assertions.assertEquals ( "Incoming.received", sp.getValue() );
 	}
 	
 	private static class Bouncer

@@ -1,9 +1,7 @@
 package utility.lua;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 import org.luaj.vm2.Varargs;
 
 public class VarargsBuilderTest
@@ -13,7 +11,7 @@ public class VarargsBuilderTest
 	{
 		Varargs v = new VarargsBuilder().build();
 		
-		assertEquals ( 0, v.narg() );
+		Assertions.assertEquals ( 0, v.narg() );
 	}
 	
 	@Test
@@ -23,38 +21,38 @@ public class VarargsBuilderTest
 		
 		v = new VarargsBuilder().add ( 35 ).build();
 		
-		assertEquals ( 1, v.narg() );
-		assertTrue ( v.arg ( 1 ).isint() );
-		assertEquals ( 35, v.arg ( 1 ).toint() );
+		Assertions.assertEquals ( 1, v.narg() );
+		Assertions.assertTrue ( v.arg ( 1 ).isint() );
+		Assertions.assertEquals ( 35, v.arg ( 1 ).toint() );
 		
 		v = new VarargsBuilder().add ( ( long ) 45 ).build();
 		
-		assertEquals ( 1, v.narg() );
-		assertTrue ( v.arg ( 1 ).islong() );
-		assertEquals ( 45, v.arg ( 1 ).tolong() );
+		Assertions.assertEquals ( 1, v.narg() );
+		Assertions.assertTrue ( v.arg ( 1 ).islong() );
+		Assertions.assertEquals ( 45, v.arg ( 1 ).tolong() );
 		
 		v = new VarargsBuilder().add ( 7.7 ).build();
 		
-		assertEquals ( 1, v.narg() );
+		Assertions.assertEquals ( 1, v.narg() );
 		v.arg ( 1 ).checkdouble();
-		assertEquals ( 7.7, v.arg ( 1 ).todouble(), 0.1 );
+		Assertions.assertEquals ( 7.7, v.arg ( 1 ).todouble(), 0.1 );
 		
 		v = new VarargsBuilder().add ( true ).build();
 		
-		assertEquals ( 1, v.narg() );
-		assertTrue ( v.arg ( 1 ).isboolean() );
-		assertTrue ( v.arg ( 1 ).toboolean() );
+		Assertions.assertEquals ( 1, v.narg() );
+		Assertions.assertTrue ( v.arg ( 1 ).isboolean() );
+		Assertions.assertTrue ( v.arg ( 1 ).toboolean() );
 		
 		v = new VarargsBuilder().add ( "Jackie" ).build();
 		
-		assertEquals ( 1, v.narg() );
-		assertTrue ( v.arg ( 1 ).isstring() );
-		assertEquals ( "Jackie", v.arg ( 1 ).tojstring() );
+		Assertions.assertEquals ( 1, v.narg() );
+		Assertions.assertTrue ( v.arg ( 1 ).isstring() );
+		Assertions.assertEquals ( "Jackie", v.arg ( 1 ).tojstring() );
 		
 		v = new VarargsBuilder().addNil().build();
 		
-		assertEquals ( 1, v.narg() );
-		assertTrue ( v.arg ( 1 ).isnil() );
+		Assertions.assertEquals ( 1, v.narg() );
+		Assertions.assertTrue ( v.arg ( 1 ).isnil() );
 	}
 	
 	@Test
@@ -71,10 +69,10 @@ public class VarargsBuilderTest
 	    
 	    Varargs v = c.build ();
 	    
-	    assertEquals ( 4, v.narg () );
-	    assertTrue ( v.arg ( 1 ).toboolean () );
-	    assertEquals ( 10, v.arg ( 2 ).toint () );
-	    assertEquals ( "Hello", v.arg ( 3 ).tojstring () );
-	    assertEquals ( 7.3, v.arg ( 4 ).todouble (), 0.01 );
+	    Assertions.assertEquals ( 4, v.narg () );
+	    Assertions.assertTrue ( v.arg ( 1 ).toboolean () );
+	    Assertions.assertEquals ( 10, v.arg ( 2 ).toint () );
+	    Assertions.assertEquals ( "Hello", v.arg ( 3 ).tojstring () );
+	    Assertions.assertEquals ( 7.3, v.arg ( 4 ).todouble (), 0.01 );
 	}
 }

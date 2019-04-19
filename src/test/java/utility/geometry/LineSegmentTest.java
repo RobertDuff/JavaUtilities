@@ -1,9 +1,9 @@
 package utility.geometry;
 
-import static org.junit.Assert.*;
-
-import org.junit.Test;
-
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
 
 public class LineSegmentTest
 {
@@ -15,7 +15,7 @@ public class LineSegmentTest
 		LineSegment l;
 		
 		l = new LineSegment ( 1, 1, 2, 2 );		
-		assertEquals ( Math.PI / 4, l.line ().theta (), TOLERANCE );
+		Assertions.assertEquals ( Math.PI / 4, l.line ().theta (), TOLERANCE );
 	}
 
 	@Test
@@ -24,7 +24,7 @@ public class LineSegmentTest
 		LineSegment l;
 		
 		l = new LineSegment ( 1, 1, 2, 2 );
-		assertEquals ( Math.sqrt ( 2 ), l.length (), TOLERANCE );		
+		Assertions.assertEquals ( Math.sqrt ( 2 ), l.length (), TOLERANCE );		
 	}
 	
 	@Test
@@ -32,37 +32,26 @@ public class LineSegmentTest
 	{
 		LineSegment l = new LineSegment ( 1, 2, 3, 4 );
 		
-		assertEquals ( "LineSegment(Point(1.0,2.0),Point(3.0,4.0))", l.toString () );
+		Assertions.assertEquals ( "LineSegment(Point(1.0,2.0),Point(3.0,4.0))", l.toString () );
 	}
 
-	@Test
-	public void testTheta()
+	@ParameterizedTest
+	@CsvSource ( {
+	    "0,0,1,0,0",
+        "0,0,1,1,0.78539816339744830961566084581988",
+        "0,0,0,1,1.5707963267948966192313216916398",
+        "0,0,-1,1,2.3561944901923449288469825374596",
+        "0,0,-1,0,3.1415926535897932384626433832795",
+        "0,0,-1,-1,-2.3561944901923449288469825374596",
+        "0,0,0,-1,-1.5707963267948966192313216916398",
+        "0,0,1,-1,-0.78539816339744830961566084581988",
+	} )
+	public void testTheta ( double x1, double y1, double x2, double y2, double theta )
 	{
 		LineSegment l;
 		
-		l = new LineSegment ( 0, 0, 1, 0 );
-		assertEquals ( 0, l.theta (), TOLERANCE );
-		
-		l = new LineSegment ( 0, 0, 1, 1 );
-		assertEquals ( Math.PI / 4, l.theta (), TOLERANCE );
-		
-		l = new LineSegment ( 0, 0, 0, 1 );
-		assertEquals ( Math.PI / 2, l.theta (), TOLERANCE );
-		
-		l = new LineSegment ( 0, 0, -1, 1 );
-		assertEquals ( Math.PI * 3/4, l.theta (), TOLERANCE );
-		
-		l = new LineSegment ( 0, 0, -1, 0 );
-		assertEquals ( Math.PI, l.theta (), TOLERANCE );
-		
-		l = new LineSegment ( 0, 0, -1, -1 );
-		assertEquals ( -Math.PI * 3/4, l.theta (), TOLERANCE );
-		
-		l = new LineSegment ( 0, 0, 0, -1 );
-		assertEquals ( -Math.PI / 2, l.theta (), TOLERANCE );
-		
-		l = new LineSegment ( 0, 0, 1, -1 );
-		assertEquals ( -Math.PI / 4, l.theta (), TOLERANCE );
+		l = new LineSegment ( x1, y1, x2, y2 );
+		Assertions.assertEquals ( theta, l.theta (), TOLERANCE );
 	}
 	
 	@Test
@@ -72,38 +61,29 @@ public class LineSegmentTest
 		
 		l = new LineSegment ( -1, -3, 1, 3 );
 		Point m = l.midPoint ();
-		assertEquals ( 0, m.x (), TOLERANCE );
-		assertEquals ( 0, m.y (), TOLERANCE );
+		
+		Assertions.assertAll ( 
+		        () -> Assertions.assertEquals ( 0, m.x (), TOLERANCE ),
+		        () -> Assertions.assertEquals ( 0, m.y (), TOLERANCE )
+		        );
 	}
 	
-	@Test
-	public void testAlong()
+	@ParameterizedTest
+	@CsvSource ( {
+	    "-0.25,1,5",
+	    "0,3,8",
+	    "0.25,5,11",
+	    "0.5,7,14",
+	    "0.75,9,17",
+	    "1,11,20",
+	    "1.25,13,23",
+	} )
+	public void testAlong ( double ratio, double x, double y )
 	{
 		LineSegment l = new LineSegment ( 3, 8, 11, 20 );
 		
-		Point a = l.along ( 0 );
-		assertEquals ( l.a (), a );
-		
-		a = l.along ( 0.25 );
-		assertEquals (  5, a.x (), TOLERANCE );
-		assertEquals ( 11, a.y (), TOLERANCE );
-		
-		a = l.along ( 0.5 );
-		assertEquals ( l.midPoint (), a );
-		
-		a = l.along ( 0.75 );
-		assertEquals (  9, a.x (), TOLERANCE );
-		assertEquals ( 17, a.y (), TOLERANCE );
-		
-		a = l.along ( 1 );
-		assertEquals ( l.b (), a );
-		
-		a = l.along ( -0.25 );
-		assertEquals ( 1, a.x (), TOLERANCE );
-		assertEquals ( 5, a.y (), TOLERANCE );
-		
-		a = l.along ( 1.25 );
-		assertEquals ( 13, a.x (), TOLERANCE );
-		assertEquals ( 23, a.y (), TOLERANCE );
+		Point a = l.along ( ratio );
+		Assertions.assertEquals ( x, a.x (), TOLERANCE );
+		Assertions.assertEquals ( y, a.y (), TOLERANCE );
 	}
 }

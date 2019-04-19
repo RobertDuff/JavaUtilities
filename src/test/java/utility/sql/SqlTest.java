@@ -1,7 +1,5 @@
 package utility.sql;
 
-import static org.junit.Assert.*;
-
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -10,7 +8,8 @@ import java.util.Arrays;
 import java.util.List;
 
 import org.easymock.EasyMock;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 import utility.sql.Sql.Null;
 
@@ -168,7 +167,7 @@ public class SqlTest
         
         EasyMock.replay ( stmt );
         
-        assertNull ( new Sql ( stmt ).go () );
+        Assertions.assertNull ( new Sql ( stmt ).go () );
         
         EasyMock.verify ( stmt );
     }
@@ -188,7 +187,7 @@ public class SqlTest
         
         EasyMock.replay ( stmt );
         
-        assertNull ( new Sql ( stmt ).go ( 7, "Jackie" ) );
+        Assertions.assertNull ( new Sql ( stmt ).go ( 7, "Jackie" ) );
         
         EasyMock.verify ( stmt );
     }
@@ -210,7 +209,7 @@ public class SqlTest
         
         EasyMock.replay ( stmt );
         
-        assertNull ( new Sql ( stmt ).add ( false ).go ( 7, "Jackie" ) );
+        Assertions.assertNull ( new Sql ( stmt ).add ( false ).go ( 7, "Jackie" ) );
         
         EasyMock.verify ( stmt );
     }
@@ -234,7 +233,7 @@ public class SqlTest
         l.add ( 7L );
         l.add ( 11L );
         
-        assertNull ( new Sql ( stmt ).go ( l ) );
+        Assertions.assertNull ( new Sql ( stmt ).go ( l ) );
         
         EasyMock.verify ( stmt );
     }
@@ -252,7 +251,7 @@ public class SqlTest
         
         EasyMock.replay ( stmt, rs );
         
-        assertNotNull ( new Sql ( stmt ).go () );
+        Assertions.assertNotNull ( new Sql ( stmt ).go () );
         
         EasyMock.verify ( stmt );
     }

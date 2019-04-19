@@ -58,9 +58,6 @@ public class LineBuilder
 		if ( a == null || b == null )
 			throw new NullPointerException ( "Neither a nor b may be null" );
 		
-		if ( a.x() == b.x() && a.y() == b.y() )
-			throw new IllegalArgumentException ( "The Two Points represent the Same Point." );
-		
 		return between ( a.x(), a.y(), b.x(), b.y() );
 	}
 	

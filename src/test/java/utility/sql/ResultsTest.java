@@ -1,16 +1,12 @@
 package utility.sql;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.fail;
-
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 
 import org.easymock.EasyMock;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 public class ResultsTest
 {
@@ -24,7 +20,7 @@ public class ResultsTest
 
         EasyMock.replay ( md, rs );
         
-        assertNull ( new Results ( rs ).single() );
+        Assertions.assertNull ( new Results ( rs ).single() );
 
         EasyMock.verify ( md, rs );
     }
@@ -39,7 +35,7 @@ public class ResultsTest
         
         EasyMock.replay ( md, rs );
                 
-        assertFalse ( new Results ( rs ).iterator ().hasNext () );
+        Assertions.assertFalse ( new Results ( rs ).iterator ().hasNext () );
 
         EasyMock.verify ( md, rs );
     }
@@ -55,7 +51,7 @@ public class ResultsTest
         EasyMock.replay ( md, rs );
         
         for ( @SuppressWarnings ( "unused" ) ResultSet row : new Results ( rs ) )
-            fail ( "Should not have succeeded" );
+            Assertions.fail ( "Should not have succeeded" );
 
         EasyMock.verify ( md, rs );
     }
@@ -73,7 +69,7 @@ public class ResultsTest
         
         Results r = new Results ( rs );
         
-        assertEquals ( 77, r.single ().getInt ( 1 ) );
+        Assertions.assertEquals ( 77, r.single ().getInt ( 1 ) );
 
         EasyMock.verify ( md, rs );
     }
@@ -92,8 +88,8 @@ public class ResultsTest
         
         Results r = new Results ( rs );
         
-        assertEquals ( 77, r.single ().getInt ( 1 ) );
-        assertEquals ( 88, r.single ().getInt ( 2 ) );
+        Assertions.assertEquals ( 77, r.single ().getInt ( 1 ) );
+        Assertions.assertEquals ( 88, r.single ().getInt ( 2 ) );
 
         EasyMock.verify ( md, rs );
     }
@@ -119,16 +115,16 @@ public class ResultsTest
         Results r = new Results ( rs );
         
         if ( r.hasNext () )
-            assertEquals ( 77, r.next ().getInt ( 1 ) );
+            Assertions.assertEquals ( 77, r.next ().getInt ( 1 ) );
         else
-            fail ( "Should not have next" );
+            Assertions.fail ( "Should not have next" );
 
         if ( r.hasNext () )
-            assertEquals ( 88, r.next ().getInt ( 1 ) );
+            Assertions.assertEquals ( 88, r.next ().getInt ( 1 ) );
         else
-            fail ( "Should not have next" );
+            Assertions.fail ( "Should not have next" );
         
-        assertFalse ( r.hasNext () );
+        Assertions.assertFalse ( r.hasNext () );
 
         EasyMock.verify ( md, rs );
     }
@@ -155,7 +151,7 @@ public class ResultsTest
         int pos = 0;
         
         for ( ResultSet r : new Results ( rs ) )
-            assertEquals ( expect[ pos++ ], r.getInt ( 1 ) );
+            Assertions.assertEquals ( expect[ pos++ ], r.getInt ( 1 ) );
 
         EasyMock.verify ( md, rs );
     }
@@ -187,21 +183,21 @@ public class ResultsTest
         {
             ResultSet row = r.next ();
             
-            assertEquals ( 77, row.getInt ( 1 ) );
-            assertEquals ( 88, row.getInt ( 2 ) );
+            Assertions.assertEquals ( 77, row.getInt ( 1 ) );
+            Assertions.assertEquals ( 88, row.getInt ( 2 ) );
         }
         else
-            fail ( "Should Have Had Next" );
+            Assertions.fail ( "Should Have Had Next" );
         
         if ( r.hasNext () )
         {
             ResultSet row = r.next ();
             
-            assertEquals ( 99, row.getInt ( 1 ) );
-            assertEquals ( 22, row.getInt ( 2 ) );
+            Assertions.assertEquals ( 99, row.getInt ( 1 ) );
+            Assertions.assertEquals ( 22, row.getInt ( 2 ) );
         }
 
-        assertFalse ( r.hasNext () );
+        Assertions.assertFalse ( r.hasNext () );
 
         EasyMock.verify ( md, rs );
    }
@@ -231,8 +227,8 @@ public class ResultsTest
                 
         for ( ResultSet r : new Results ( rs ) )
         {
-            assertEquals ( expect[ pos++ ], r.getInt ( 1 ) );
-            assertEquals ( expect[ pos++ ], r.getInt ( 2 ) );
+            Assertions.assertEquals ( expect[ pos++ ], r.getInt ( 1 ) );
+            Assertions.assertEquals ( expect[ pos++ ], r.getInt ( 2 ) );
         }
 
         EasyMock.verify ( md, rs );

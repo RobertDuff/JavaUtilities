@@ -1,14 +1,10 @@
 package utility.collections;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
-
 import java.util.Set;
 import java.util.TreeSet;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 public class SetOperationsTest
 {
@@ -25,7 +21,7 @@ public class SetOperationsTest
         set.add ( b );
         set.add ( c );
         
-        assertEquals ( a, SetOperations.findAny ( set, s -> s.equals ( "A" ) ) );
+        Assertions.assertEquals ( a, SetOperations.findAny ( set, s -> s.equals ( "A" ) ) );
     }
     
     @Test
@@ -41,7 +37,7 @@ public class SetOperationsTest
         set.add ( b );
         set.add ( c );
         
-        assertNull ( SetOperations.findAny ( set, s -> s.equals ( "D" ) ) );
+        Assertions.assertNull ( SetOperations.findAny ( set, s -> s.equals ( "D" ) ) );
     }
     
     @Test
@@ -59,11 +55,11 @@ public class SetOperationsTest
         
         Set<String> subset = SetOperations.subSet ( set, s -> true );
         
-        assertEquals ( 3, subset.size () );
+        Assertions.assertEquals ( 3, subset.size () );
         
-        assertTrue ( subset.contains ( a ) );
-        assertTrue ( subset.contains ( b ) );
-        assertTrue ( subset.contains ( c ) );
+        Assertions.assertTrue ( subset.contains ( a ) );
+        Assertions.assertTrue ( subset.contains ( b ) );
+        Assertions.assertTrue ( subset.contains ( c ) );
     }
     
     @Test
@@ -81,11 +77,11 @@ public class SetOperationsTest
         
         Set<String> subset = SetOperations.subSet ( set, s -> s.equals ( "B" ) );
         
-        assertEquals ( 1, subset.size () );
+        Assertions.assertEquals ( 1, subset.size () );
         
-        assertFalse ( subset.contains ( a ) );
-        assertTrue ( subset.contains ( b ) );
-        assertFalse ( subset.contains ( c ) );
+        Assertions.assertFalse ( subset.contains ( a ) );
+        Assertions.assertTrue ( subset.contains ( b ) );
+        Assertions.assertFalse ( subset.contains ( c ) );
     }
     
     @Test
@@ -103,6 +99,6 @@ public class SetOperationsTest
         
         Set<String> subset = SetOperations.subSet ( set, s -> s.equals ( "D" ) );
         
-        assertEquals ( 0, subset.size () );
+        Assertions.assertEquals ( 0, subset.size () );
     }
 }
